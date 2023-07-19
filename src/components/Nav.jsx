@@ -14,7 +14,7 @@ const Navbar = () => {
 
         <div>
         {/* header */}
-        <div className="top-header-area" id="sticker" style={{background: "black"}}>
+        <div className="top-header-area" id="sticker" style={{background: "#051922"}}>
             <div className="container">
             <div className="row">
                 <div className="col-lg-12 col-sm-12 text-center">

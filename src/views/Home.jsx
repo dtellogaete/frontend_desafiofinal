@@ -13,6 +13,7 @@ import '../assets/css/responsive.css';
 /* Componentes  */
 import Navbar from '../components/Nav';
 import Footer from '../components/Footer';
+import ProductCard from '../components/ProductCard';
 
 
 
@@ -23,14 +24,14 @@ const Home = () => {
             <Navbar />             
                 <div>
             {/* hero area */}
-            <div className="hero-area hero-bg">
-            <div className="container">
+            <div className="shop-banner " style={{paddingTop:"200px", }}>
+            <div className="shop-banner-content container">
                 <div className="row">
-                <div className="col-lg-9 offset-lg-2 text-center">
+                <div className="col-lg-9  text-center">
                     <div className="hero-text">
                     <div className="hero-text-tablecell">
                         <p className="subtitle">Fresh &amp; Organic</p>
-                        <h1>Delicious Seasonal Fruits</h1>
+                        <h1>Herbaland</h1>
                         <div className="hero-btns">
                         <a href="shop.html" className="boxed-btn">Fruit Collection</a>
                         <a href="contact.html" className="bordered-btn">Contact Us</a>
@@ -89,42 +90,15 @@ const Home = () => {
                 <div className="row">
                 <div className="col-lg-8 offset-lg-2 text-center">
                     <div className="section-title">	
-                    <h3><span className="orange-text">Our</span> Products</h3>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquid, fuga quas itaque eveniet beatae optio.</p>
+                    <h3>Top más <span className="orange-text">Vendidos</span> </h3>
+                    <p>Conoce los mejores productos de nuestra plataforma</p>
                     </div>
                 </div>
                 </div>
                 <div className="row">
-                <div className="col-lg-4 col-md-6 text-center">
-                    <div className="single-product-item">
-                    <div className="product-image">
-                        <a href="single-product.html"><img src="assets/img/products/product-img-1.jpg" alt="" /></a>
-                    </div>
-                    <h3>Strawberry</h3>
-                    <p className="product-price"><span>Per Kg</span> 85$ </p>
-                    <a href="cart.html" className="cart-btn"><i className="fas fa-shopping-cart" /> Add to Cart</a>
-                    </div>
-                </div>
-                <div className="col-lg-4 col-md-6 text-center">
-                    <div className="single-product-item">
-                    <div className="product-image">
-                        <a href="single-product.html"><img src="assets/img/products/product-img-2.jpg" alt="" /></a>
-                    </div>
-                    <h3>Berry</h3>
-                    <p className="product-price"><span>Per Kg</span> 70$ </p>
-                    <a href="cart.html" className="cart-btn"><i className="fas fa-shopping-cart" /> Add to Cart</a>
-                    </div>
-                </div>
-                <div className="col-lg-4 col-md-6 offset-md-3 offset-lg-0 text-center">
-                    <div className="single-product-item">
-                    <div className="product-image">
-                        <a href="single-product.html"><img src="assets/img/products/product-img-3.jpg" alt="" /></a>
-                    </div>
-                    <h3>Lemon</h3>
-                    <p className="product-price"><span>Per Kg</span> 35$ </p>
-                    <a href="cart.html" className="cart-btn"><i className="fas fa-shopping-cart" /> Add to Cart</a>
-                    </div>
-                </div>
+                <ProductCard product="Menta" variant="100g" price="2000" img= "https://www.webconsultas.com/sites/default/files/styles/wc_adaptive_image__medium/public/media/2019/04/23/menta_p.jpg" />
+                <ProductCard product="Menta" variant="100g" price="2000" img= "https://www.webconsultas.com/sites/default/files/styles/wc_adaptive_image__medium/public/media/2019/04/23/menta_p.jpg" />
+                <ProductCard product="Menta" variant="100g" price="2000" img= "https://www.webconsultas.com/sites/default/files/styles/wc_adaptive_image__medium/public/media/2019/04/23/menta_p.jpg" />
                 </div>
             </div>
             </div>
