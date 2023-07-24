@@ -1407,8 +1407,12 @@ a.mobile-show.search-bar-icon:hover {
 
 
 .hero-text {
-  display: table;
+ 
   height: 100%;
+ 
+  /*Centrar el texto*/
+  text-align: center;
+  
 }
 
 .hero-text-tablecell {

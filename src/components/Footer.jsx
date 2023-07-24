@@ -8,6 +8,8 @@ import '../assets/css/meanmenu.min.css';
 import '../assets/css/main.css';
 import '../assets/css/responsive.css';
 
+import { Link } from 'react-router-dom';
+
 const Footer = () => {
 
     return (
@@ -19,36 +21,34 @@ const Footer = () => {
             <div className="row">
               <div className="col-lg-3 col-md-6">
                 <div className="footer-box about-widget">
-                  <h2 className="widget-title">About us</h2>
-                  <p>Ut enim ad minim veniam perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae.</p>
+                  <h2 className="widget-title">Acerca de</h2>
+                  <p>Herbaland, marketplace de hierbas medicinales, ofrece una exquisita variedad de productos naturales y saludables. Nutre tu bienestar con la sabiduría de la naturaleza en cada taza. Bienvenido a una experiencia herbal única.</p>
                 </div>
               </div>
               <div className="col-lg-3 col-md-6">
                 <div className="footer-box get-in-touch">
-                  <h2 className="widget-title">Get in Touch</h2>
+                  <h2 className="widget-title">Contacto</h2>
                   <ul>
-                    <li>34/8, East Hukupara, Gifirtok, Sadan.</li>
-                    <li>support@fruitkha.com</li>
-                    <li>+00 111 222 3333</li>
+                    <li>Alameda 121, Santiago, Chile</li>
+                    <li>contacto@herbaland.cl</li>
+                    <li>+56  951154585</li>                    
                   </ul>
                 </div>
               </div>
               <div className="col-lg-3 col-md-6">
                 <div className="footer-box pages">
-                  <h2 className="widget-title">Pages</h2>
+                  <h2 className="widget-title">Páginas</h2>
                   <ul>
-                    <li><a href="index.html">Home</a></li>
-                    <li><a href="about.html">About</a></li>
-                    <li><a href="services.html">Shop</a></li>
-                    <li><a href="news.html">News</a></li>
-                    <li><a href="contact.html">Contact</a></li>
+                    <li ><Link to="/">Home</Link></li>
+                    <li><Link to="/market">Marketplace</Link></li>
+                    <li><Link to="/contact">Contacto</Link></li>
                   </ul>
                 </div>
               </div>
               <div className="col-lg-3 col-md-6">
                 <div className="footer-box subscribe">
-                  <h2 className="widget-title">Subscribe</h2>
-                  <p>Subscribe to our mailing list to get the latest updates.</p>
+                  <h2 className="widget-title">Subscríbete</h2>
+                  <p>Subscribete a nuestra página para estar enteredo de nuestras novedades</p>
                   <form action="index.html">
                     <input type="email" placeholder="Email" />
                     <button type="submit"><i className="fas fa-paper-plane" /></button>

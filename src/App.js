@@ -11,6 +11,7 @@ import Marketplace from './views/Marketplace';
 import NotFound from './views/NotFound';
 import ProductSingle from './views/ProductSingle';
 import Cart from './views/Cart';
+import Contact from './views/Contact';
 
 /*Context*/
 import Context  from './contextproduct';
@@ -34,7 +35,8 @@ const App = () => {
           <Route path="/market" element={<Marketplace/>} /> 
           <Route path="*" element={<NotFound/>} />
           <Route path="/product/:id" element={<ProductSingle/>} />     
-          <Route path="/cart" element={<Cart/>} />          
+          <Route path="/cart" element={<Cart/>} />  
+          <Route path="/contact" element={<Contact/>} />        
         </Routes>
       </Context.Provider>      
       </BrowserRouter>    

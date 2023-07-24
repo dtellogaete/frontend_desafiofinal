@@ -1,5 +1,8 @@
 import React from "react";
 
+/* Bootstrap */
+import Button from "react-bootstrap/Button";
+
 /*Components*/
 import Navbar from "../components/Nav";
 import Footer from "../components/Footer";
@@ -13,6 +16,9 @@ import { products_variant } from "../data/Products_variants";
 /*Components */
 import ProductCard from "../components/ProductCard";
 
+/* Context */
+import  Context  from "../contextproduct";
+import { useContext } from 'react';
 
 const ProductSingle = () => {
 
@@ -22,7 +28,29 @@ const ProductSingle = () => {
 
     const products = products_variant;
 
+    /*Añade productos al cart*/
+    const { cart, setCart } = useContext(Context);  
+    
+    const addToCart = (id) => {    
+        const productoExistente = cart.find((p) => p.id === id);
+        const quantityInput = document.getElementById('quantityInput');
 
+        // Get the value of the quantity input field
+        const quantity = parseInt(quantityInput.value);
+        if (productoExistente) {          
+            const nuevosProductos = cart.map((p) =>
+            p.id === id ? { ...p, cantidad: p.cantidad + quantity } : p
+        );
+            setCart(nuevosProductos);
+        } else {
+        // Si el producto no existe en el carrito, agregarlo como un nuevo elemento
+            const producto = products.find((p) => p.id_product_variant == id);
+            console.log(producto)
+        if (producto) {
+            setCart([...cart, { id, cantidad: 1 }]);
+        }
+        }
+    };
 
     // Formato peso chileno
     const formatPrice = (price) => {
@@ -30,10 +58,7 @@ const ProductSingle = () => {
           style: 'currency',
           currency: 'CLP',
         }).format(price);
-    }
-      
-
-  
+    } 
 
     return (
         <>
@@ -68,9 +93,11 @@ const ProductSingle = () => {
                             <p>{product.description}</p>
                             <div className="single-product-form">
                             <form action="index.html">
-                                <input type="number" placeholder={0} />
+                                <input type="number" placeholder={0} id="quantityInput"/>
                             </form>
-                            <a href="cart.html" className="cart-btn"><i className="fas fa-shopping-cart" /> Agrgar al carro</a>
+                            <Button variant="success" className="cart-btn" onClick={() => addToCart(parseInt(id))}>
+                                <i className="fas fa-shopping-cart" /> Agregar al carro
+                            </Button>
                             <p><strong>Categoría: </strong>Hierbas</p>
                             </div>
                             <h4>Compartir:</h4>
