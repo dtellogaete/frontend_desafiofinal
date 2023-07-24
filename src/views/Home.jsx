@@ -15,9 +15,42 @@ import Navbar from '../components/Nav';
 import Footer from '../components/Footer';
 import ProductCard from '../components/ProductCard';
 
+/*Data */
+import { products_variant } from '../data/Products_variants';
+
+/* Context */
+import  Context  from "../contextproduct";
+import { useContext } from 'react';
+
 
 
 const Home = () => {
+
+    const products = products_variant;
+
+    const { cart, setCart } = useContext(Context);          
+
+    
+
+    /*Añade productos al cart*/
+    const addToCart = (id) => {    
+        const productoExistente = cart.find((p) => p.id === id);
+        if (productoExistente) {          
+            const nuevosProductos = cart.map((p) =>
+            p.id === id ? { ...p, cantidad: p.cantidad + 1 } : p
+        );
+            setCart(nuevosProductos);
+        } else {
+          // Si el producto no existe en el carrito, agregarlo como un nuevo elemento
+            const producto = products.find((p) => p.id === id);
+            console.log(producto)
+        if (producto) {
+            setCart([...cart, { id, cantidad: 1 }]);
+        }
+    }
+    };
+
+   
 
     return (
         <>
@@ -53,15 +86,15 @@ const Home = () => {
                         <i className="fas fa-shipping-fast" />
                     </div>
                     <div className="content">
-                        <h3>Free Shipping</h3>
-                        <p>When order over $75</p>
+                        <h3>Envío Gratis</h3>
+                        <p>Por compras sobre $100.000</p>
                     </div>
                     </div>
                 </div>
                 <div className="col-lg-4 col-md-6 mb-4 mb-lg-0">
                     <div className="list-box d-flex align-items-center">
                     <div className="list-icon">
-                        <i className="fas fa-phone-volume" />
+                        <i className="fa-brands fa-pagelines"  />
                     </div>
                     <div className="content">
                         <h3>24/7 Support</h3>
@@ -96,9 +129,18 @@ const Home = () => {
                 </div>
                 </div>
                 <div className="row">
-                <ProductCard product="Menta" variant="100g" price="2000" img= "https://www.webconsultas.com/sites/default/files/styles/wc_adaptive_image__medium/public/media/2019/04/23/menta_p.jpg" />
-                <ProductCard product="Menta" variant="100g" price="2000" img= "https://www.webconsultas.com/sites/default/files/styles/wc_adaptive_image__medium/public/media/2019/04/23/menta_p.jpg" />
-                <ProductCard product="Menta" variant="100g" price="2000" img= "https://www.webconsultas.com/sites/default/files/styles/wc_adaptive_image__medium/public/media/2019/04/23/menta_p.jpg" />
+                {/*Components Product Card */}      
+                {products.slice(0, 3).map((product) => (
+                    <ProductCard
+                        key={product.id_product_variant} // Asegúrate de agregar una clave única para cada elemento en el mapa
+                        product={product.name}
+                        variant={product.variante}
+                        price={product.price}
+                        img={"https://pymstatic.com/27652/conversions/manzanilla-wide.jpg"}
+                        id={product.id_product_variant.toString()}
+                    />
+                ))}
+
                 </div>
             </div>
             </div>
@@ -287,20 +329,21 @@ const Home = () => {
                 <div className="row">
                 <div className="col-lg-12">
                     <div className="logo-carousel-inner">
-                    <div className="single-logo-item">
-                        <img src="assets/img/company-logos/1.png" alt="" />
+                    <div className="single-logo-item">                        
+                        <img src="/assets/img/company-logos/1.png" alt="" />
                     </div>
                     <div className="single-logo-item">
-                        <img src="assets/img/company-logos/2.png" alt="" />
+                        <img src="/img/company-logos/2.png" alt="" />
                     </div>
                     <div className="single-logo-item">
-                        <img src="assets/img/company-logos/3.png" alt="" />
+                        <img src="/img/company-logos/3.png" alt="" />
                     </div>
                     <div className="single-logo-item">
-                        <img src="assets/img/company-logos/4.png" alt="" />
+                        <img src="/img/company-logos/4.png" alt="" />
                     </div>
                     <div className="single-logo-item">
-                        <img src="assets/img/company-logos/5.png" alt="" />
+                        <img src="/img/company-logos/5.png" alt="" />
+                        <img src="/img/logo.png" alt="" />
                     </div>
                     </div>
                 </div>

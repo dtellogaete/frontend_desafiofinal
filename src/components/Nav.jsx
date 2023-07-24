@@ -8,6 +8,8 @@ import '../assets/css/meanmenu.min.css';
 import '../assets/css/main.css';
 import '../assets/css/responsive.css';
 
+import { Link } from 'react-router-dom';
+
 const Navbar = () => {
 
     return (
@@ -22,20 +24,21 @@ const Navbar = () => {
                     {/* logo */}
                     <div className="site-logo">
                     <a href="index.html">
-                        <img src="assets/img/logo.png" alt="" />
+                        <img src="/img/logo.png" alt="" />
                     </a>
                     </div>
                     {/* logo */}
                     {/* menu start */}
                     <nav className="main-menu">
                     <ul>
-                        <li className="current-list-item"><a href="#">Home</a>
+                        <li className="current-list-item">                            
+                            <Link to="/">Home</Link>
                         <ul className="sub-menu">
                             <li><a href="index.html">Static Home</a></li>
                             <li><a href="index_2.html">Slider Home</a></li>
                         </ul>
                         </li>
-                        <li><a href="about.html">About</a></li>
+                        <li><Link to="/market">Marketplace</Link></li>
                         <li><a href="#">Pages</a>
                         <ul className="sub-menu">
                             <li><a href="404.html">404 page</a></li>

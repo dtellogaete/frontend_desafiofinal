@@ -1,0 +1,73 @@
+export const products = [
+    {
+      id_products: 1,
+      name: "Menta",
+      brand: "Herbaland",
+      description: "Menta Natural de Chile",
+      photo: "https://www.webconsultas.com/sites/default/files/styles/wc_adaptive_image__medium/public/media/2019/04/23/menta_p.jpg",
+    },
+    {
+      id_products: 2,
+      name: "Albahaca",
+      brand: "Herbaland",
+      description: "Albahaca fresca y aromática",
+      photo: "https://www.webconsultas.com/sites/default/files/styles/wc_adaptive_image__medium/public/media/2019/04/23/menta_p.jpg",
+    },
+    {
+      id_products: 3,
+      name: "Manzanilla",
+      brand: "Herbaland",
+      description: "Manzanilla relajante y suave",
+      photo: "https://www.webconsultas.com/sites/default/files/styles/wc_adaptive_image__medium/public/media/2019/04/23/menta_p.jpg",
+    },
+    {
+      id_products: 4,
+      name: "Orégano",
+      brand: "Herbaland",
+      description: "Orégano mediterráneo de alta calidad",
+      photo: "https://www.webconsultas.com/sites/default/files/styles/wc_adaptive_image__medium/public/media/2019/04/23/menta_p.jpg",
+    },
+    {
+      id_products: 5,
+      name: "Romero",
+      brand: "Herbaland",
+      description: "Romero fragante y versátil",
+      photo: "https://www.webconsultas.com/sites/default/files/styles/wc_adaptive_image__medium/public/media/2019/04/23/menta_p.jpg",
+    },
+    {
+      id_products: 6,
+      name: "Lavanda",
+      brand: "Herbaland",
+      description: "Lavanda relajante y aromática",
+      photo: "https://www.webconsultas.com/sites/default/files/styles/wc_adaptive_image__medium/public/media/2019/04/23/menta_p.jpg",
+    },
+    {
+      id_products: 7,
+      name: "Salvia",
+      brand: "Herbaland",
+      description: "Salvia medicinal y sabrosa",
+      photo: "https://www.webconsultas.com/sites/default/files/styles/wc_adaptive_image__medium/public/media/2019/04/23/menta_p.jpg",
+    },
+    {
+      id_products: 8,
+      name: "Hierbabuena",
+      brand: "Herbaland",
+      description: "Hierbabuena refrescante y revitalizante",
+      photo: "https://www.webconsultas.com/sites/default/files/styles/wc_adaptive_image__medium/public/media/2019/04/23/menta_p.jpg",
+    },
+    {
+      id_products: 9,
+      name: "Cilantro",
+      brand: "Herbaland",
+      description: "Cilantro fresco y aromático",
+      photo: "https://www.webconsultas.com/sites/default/files/styles/wc_adaptive_image__medium/public/media/2019/04/23/menta_p.jpg",
+    },
+    {
+      id_products: 10,
+      name: "Tomillo",
+      brand: "Herbaland",
+      description: "Tomillo rico en sabor y beneficioso",
+      photo: "https://www.webconsultas.com/sites/default/files/styles/wc_adaptive_image__medium/public/media/2019/04/23/menta_p.jpg",
+    },    
+  ];
+  

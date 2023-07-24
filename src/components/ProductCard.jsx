@@ -10,12 +10,49 @@ import '../assets/css/meanmenu.min.css';
 import '../assets/css/main.css';
 import '../assets/css/responsive.css';
 
+/* React Router */
+import { Link, useNavigate } from 'react-router-dom';
+
+/* Context */
+import  Context  from "../contextproduct";
+import { useContext } from 'react';
+
+/*Data */
+import { products_variant } from '../data/Products_variants';
+
 const ProductCard = (props) => {
 
   const product = props.product;
   const variant = props.variant;
   const price = props.price;
   const img = props.img;
+  const id = props.id;
+
+  const products = products_variant;
+
+  const { cart, setCart } = useContext(Context);  
+
+  /*Añade productos al cart*/
+  const addToCart = (id) => {    
+    const productoExistente = cart.find((p) => p.id === id);
+    if (productoExistente) {          
+        const nuevosProductos = cart.map((p) =>
+        p.id === id ? { ...p, cantidad: p.cantidad + 1 } : p
+    );
+        setCart(nuevosProductos);
+    } else {
+      // Si el producto no existe en el carrito, agregarlo como un nuevo elemento
+        const producto = products.find((p) => p.id_product_variant == id);
+        console.log(producto)
+    if (producto) {
+        setCart([...cart, { id, cantidad: 1 }]);
+    }
+  }
+  };
+
+  console.log(cart)
+
+
 
   // Formato peso chileno
   const formattedPrice = new Intl.NumberFormat('es-CL', {
@@ -32,8 +69,18 @@ const ProductCard = (props) => {
           <Card.Text>
             <span>{formattedPrice}</span>
           </Card.Text>
-          <Button variant="success" className="cart-btn" href="cart.html">
-            <i className="fas fa-shopping-cart" /> Add to Cart
+          <Card.Text>
+
+          
+          <Link to={`/product/${id}`}>     
+            <Button variant="success" className="cart-btn" >
+            <i className="fas fa-shopping-cart" /> Ver Más      
+            </Button>   
+          </Link>
+       
+          </Card.Text>
+          <Button variant="success" className="cart-btn" onClick={() => addToCart(id)}>
+            <i className="fas fa-shopping-cart" /> Agregar al carro
           </Button>
         </Card.Body>
       </Card>
