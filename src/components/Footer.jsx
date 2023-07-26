@@ -41,6 +41,9 @@ const Footer = () => {
                   <ul>
                     <li ><Link to="/">Home</Link></li>
                     <li><Link to="/market">Marketplace</Link></li>
+                    <li><Link to="/perfil">Perfil</Link></li>
+                    <li><Link to="/login">Log In</Link></li>
+                    <li><Link to="/registro">Registro</Link></li>
                     <li><Link to="/contact">Contacto</Link></li>
                   </ul>
                 </div>

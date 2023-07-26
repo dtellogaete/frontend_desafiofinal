@@ -1,77 +1,72 @@
-import React, { useState, useContext, useEffect } from 'react';
 
 
-import { Container, Row, Col, Form, Button, Card} from 'react-bootstrap';
-import {useNavigate} from 'react-router-dom';
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+
+
+
+/* Componentes  */
 import Navbar from '../components/Nav';
 import Footer from '../components/Footer';
 
 
-
-
-import  Context  from "../contextproduct";
-
-
 const Login = () => {
+    const navigate = useNavigate();
+    const [usuario, setUsuario] = useState({});
+    const [alerta, setAlerta] = useState(false)
 
-  const navigate = useNavigate();
+    const handleSetUsuario = ({ target: { value, name } }) => {
+        const field = {};
+        field[name] = value;
+        setUsuario({ ...usuario, ...field });
+      };
 
-  //Variables globales de usuario
-  const { user, setUser } = useContext(Context); 
-
-  useEffect(() => {
-    if(user.length > 0){
-      navigate('/admin');
-    }   
-  }, [user]);   
-
-  const [loginData, setLoginData] = useState({ username: "", password: "" });
-
-  const handleInputChange = (event) => {
-    const { name, value } = event.target;   
-    setLoginData({ ...loginData, [name]: value });    
-  };  
-
-
+    const iniciarSesion = async () => {
+      const { email, password } = usuario;
+      try {
+        if (!email || !password) return setAlerta(true);
+      } catch ({ response: { data: message } }){}
+    };
 
  
 
-  useEffect(() => {
-    console.log(user);
-  }, [user]);
-
-  return (    
+return (
     <>
-    <Navbar user= {user}/>
-    <div className="hero-area hero-bg">
-      <div className="container">
-        <div className="row">
-          <div className="col-lg-6 offset-lg-3">
-            <div className="form-title">
-              <h2>Login</h2>
-              <p>Please enter your credentials to log in.</p>
-            </div>
-            <div id="form_status" />
-            <div className="contact-form">
-              <form  id="login-form">
-                <p>
-                  <input type="email" placeholder="Email" name="email" id="email" required />
-                </p>
-                <p>
-                  <input type="password" placeholder="Password" name="password" id="password" required />
-                </p>
-                <p>
-                  <input type="submit" value="Login" />
-                </p>
-              </form>
-            </div>
-          </div>
-        </div>
+        <Navbar></Navbar>
+    <div className="col-10 col-sm-6 col-md-3 m-auto" id="login">
+      <h1>Iniciar Sesión</h1>
+      {alerta ? <div className={"alert alert-danger"}> Email y contraseña obligatorios!</div> : null}
+      <div className="form-group mt-1 ">
+        <label>Email address</label>
+        <input
+          value={usuario.email}
+          onChange={handleSetUsuario}
+          type="email"
+          name="email"
+          className="form-control"
+          placeholder="Enter email"
+        />
       </div>
+      <div className="form-group mt-1 ">
+        <label>Password</label>
+        <input
+          value={usuario.password}
+          onChange={handleSetUsuario}
+          type="password"
+          name="password"
+          className="form-control"
+          placeholder="Password"
+        />
+      </div>
+
+      <button onClick={iniciarSesion} className="btn mt-3" id="boton_iniciar_sesion">
+        Iniciar Sesión
+      </button>
     </div>
-    <Footer/>    
-    </>       
-  );
-}
+    <Footer></Footer>  
+    </>
+    );
+
+};
 
 export default Login;

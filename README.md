@@ -1,70 +1,51 @@
-# Getting Started with Create React App
+# Herbaland - Marketplace de Hierbas Medicinales y Saludables
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Herbaland, un Marketplace dedicado a la venta de hierbas medicinales y productos saludables. Este proyecto está desarrollado en React y utiliza React Router para la navegación entre rutas. A continuación, se describen las diferentes vistas implementadas en el proyecto.
 
-## Available Scripts
+## Integrantes
 
-In the project directory, you can run:
+1. Gustavo Aguilar
+2. Daniel Tello
 
-### `npm start`
+## Vistas
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+1. **Cart (Carrito)**: En esta vista, los usuarios pueden ver los productos que han agregado al carrito de compras. Además, podrán modificar las cantidades de los productos o eliminarlos del carrito antes de finalizar la compra.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+2. **Contact (Contacto)**: En esta vista, los usuarios pueden completar un formulario de contacto para enviar consultas o mensajes.
 
-### `npm test`
+3. **Home**: Esta es la página de inicio del Marketplace, donde se muestra una selección de productos destacados y algunos otros anuncios.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+4. **Login**: En esta vista, los usuarios pueden iniciar sesión en sus cuentas existentes para acceder a funcionalidades adicionales, como ver su perfil y realizar compras.
 
-### `npm run build`
+5. **Marketplace**: Esta vista es el catálogo principal del Marketplace, donde los usuarios pueden explorar y comprar diferentes productos de hierbas medicinales y saludables.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+6. **NotFound**: Esta vista se muestra cuando un usuario intenta acceder a una URL que no existe o no se encuentra dentro del proyecto.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+7. **ProductSingle (Producto Descripción)**: En esta vista, los usuarios pueden ver los detalles completos de un producto seleccionado, incluyendo su descripción, precio y opciones de compra (agregar al carrito).
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+8. **Profile**: En esta vista, los usuarios pueden ver y editar su perfil de usuario, incluyendo información personal y de contacto.
 
-### `npm run eject`
+9. **Registro Usuario**: En esta vista, los usuarios pueden registrarse para crear una nueva cuenta en Herbaland. Deben proporcionar sus datos personales y de contacto para completar el registro.
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+10. **Registro Producto**: Esta vista está reservada para usuarios con roles especiales (administradores, por ejemplo). Permite agregar nuevos productos al catálogo de Herbaland.
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+## Requerimientos
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+El proyecto cumple con los siguientes requerimientos:
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+- Está desarrollado en React y utiliza React Router para manejar la navegación entre las diferentes vistas del Marketplace.
+- Se han implementado componentes reutilizables, como Footer, Navbar y Card de producto, para mejorar la estructura y el rendimiento del proyecto.
+- Los hooks `useState` y `useEffect` se utilizan para gestionar el estado y los efectos secundarios en los componentes del proyecto.
+- El Context de React se ha utilizado para almacenar los datos de los productos agregados al carrito de compras, lo que permite que esta información esté disponible en diferentes partes del proyecto.
 
-## Learn More
+## Funcionalidades Futuras
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+Se tiene previsto trabajar con una base de datos para implementar funcionalidades adicionales, tales como:
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+- Crear usuarios para permitir el acceso personalizado a diferentes funcionalidades del Marketplace.
+- Almacenar información de los productos, usuarios y pedidos en la base de datos para mantener un registro completo de las transacciones.
+- Vistas privadas para usuarios logueados y personalizadas según el rol.
 
-### Code Splitting
+## Proyecto
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+El proyecto puede visualizarse en [https://dtellogaete.github.io/frontend_desafiofinal/](https://dtellogaete.github.io/frontend_desafiofinal/).
