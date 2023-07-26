@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/frontend_desafiofinal/static/css/main.af015cc6.css",
-    "main.js": "/frontend_desafiofinal/static/js/main.74c0f521.js",
+    "main.css": "/frontend_desafiofinal/static/css/main.d991feda.css",
+    "main.js": "/frontend_desafiofinal/static/js/main.3250abb0.js",
     "static/js/787.f360bc0c.chunk.js": "/frontend_desafiofinal/static/js/787.f360bc0c.chunk.js",
     "static/media/abt.jpg": "/frontend_desafiofinal/static/media/abt.b0bdb33f84f28699792b.jpg",
     "static/media/feature-bg.jpg": "/frontend_desafiofinal/static/media/feature-bg.b0bdb33f84f28699792b.jpg",
@@ -33,12 +33,12 @@
     "static/media/fa-regular-400.woff": "/frontend_desafiofinal/static/media/fa-regular-400.95352b573931aa75b5b6.woff",
     "static/media/fa-regular-400.woff2": "/frontend_desafiofinal/static/media/fa-regular-400.95dbe63555424726ce0c.woff2",
     "index.html": "/frontend_desafiofinal/index.html",
-    "main.af015cc6.css.map": "/frontend_desafiofinal/static/css/main.af015cc6.css.map",
-    "main.74c0f521.js.map": "/frontend_desafiofinal/static/js/main.74c0f521.js.map",
+    "main.d991feda.css.map": "/frontend_desafiofinal/static/css/main.d991feda.css.map",
+    "main.3250abb0.js.map": "/frontend_desafiofinal/static/js/main.3250abb0.js.map",
     "787.f360bc0c.chunk.js.map": "/frontend_desafiofinal/static/js/787.f360bc0c.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.af015cc6.css",
-    "static/js/main.74c0f521.js"
+    "static/css/main.d991feda.css",
+    "static/js/main.3250abb0.js"
   ]
 }
