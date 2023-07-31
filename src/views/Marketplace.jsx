@@ -1,5 +1,4 @@
-import React from 'react';
-
+import React, {useState, useEffect} from 'react';
 
 import '../assets/css/all.min.css';
 import '../assets/bootstrap/css/bootstrap.min.css';
@@ -10,6 +9,9 @@ import '../assets/css/meanmenu.min.css';
 import '../assets/css/main.css';
 import '../assets/css/responsive.css';
 
+/* Bootstrap */
+import Button from 'react-bootstrap/Button';
+
 /* Componentes  */
 import Navbar from '../components/Nav';
 import Footer from '../components/Footer';
@@ -18,13 +20,48 @@ import ProductCard from '../components/ProductCard';
 /*Data */
 import { products_variant } from '../data/Products_variants';
 
-
-
-
 const Marketplace = () => {
 
-    const products = products_variant;
+    const [products, setProducts] = useState('');
 
+    // Paginación
+    const [currentPage, setCurrentPage] = useState(1);
+    const productsPerPage = 9;
+
+    /* Obtener productos */
+    const getProducts = () => {
+        fetch('http://localhost:3002/products/')
+        .then(response => response.json())
+        .then(data => {
+            console.log(data);
+            setProducts(data);
+        })
+        .catch(error => console.error('Error:', error));
+    }
+
+    useEffect(() => {
+        getProducts();
+    }, []);
+
+    // Paginacion 
+    // Calcular el índice inicial y final de los productos a mostrar en la página actual
+    const indexOfLastProduct = currentPage * productsPerPage;
+    const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
+    const currentProducts = products.slice(indexOfFirstProduct, indexOfLastProduct);
+
+    // Calcular la cantidad total de páginas
+    const totalPages = Math.ceil(products.length / productsPerPage);
+
+    // Función para cambiar la página actual
+    const handlePageChange = (pageNumber) => {
+        setCurrentPage(pageNumber);
+    };
+
+    console.log(currentProducts)
+    console.log(indexOfFirstProduct)
+    console.log(indexOfLastProduct)
+
+    
     return (
         <>
             <Navbar />             
@@ -77,19 +114,30 @@ const Marketplace = () => {
                         </div>
                     </div>
                     <div className="row product-lists">
-                        {products.map((product) => (
-                            <ProductCard product={product.name} variant={product.variante} price={product.price} img={"https://www.webconsultas.com/sites/default/files/styles/wc_adaptive_image__medium/public/media/2019/04/23/menta_p.jpg"} id={product.id_product_variant} />
-                        ))}
+                    {Array.isArray(currentProducts) && currentProducts.length > 0 ? (
+                        currentProducts.map((product) => (
+                            <ProductCard key={product.id_products} product={product.name} variant={product.variant} price={product.price} img={product.photo} id={product.id_products} />
+                        ))
+                    ) : (
+                        <p>No hay productos para mostrar en esta página.</p>
+                    )}
                     </div>
                     <div className="row">
                         <div className="col-lg-12 text-center">
                         <div className="pagination-wrap">
                             <ul>
-                            <li><a href="#">Prev</a></li>
-                            <li><a href="#">1</a></li>
-                            <li><a className="active" href="#">2</a></li>
-                            <li><a href="#">3</a></li>
-                            <li><a href="#">Next</a></li>
+                                <li>
+                                    <Button className='btn btn-success' onClick={() => handlePageChange(currentPage - 1)} disabled={currentPage === 1}>Prev</Button>
+                                </li>
+                                {Array.from({ length: totalPages }, (_, index) => (
+                                    <li key={index}>
+                                    <Button onClick={() => handlePageChange(index + 1)} className={`${currentPage === index + 1 ? 'active' : ''} btn btn-success`}>{index + 1}</Button>
+
+                                    </li>
+                                ))}
+                                <li>
+                                    <Button className='btn btn-success' onClick={() => handlePageChange(currentPage + 1)} disabled={currentPage === totalPages}>Sig</Button>
+                                </li>
                             </ul>
                         </div>
                         </div>

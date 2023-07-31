@@ -18,8 +18,12 @@ import RegistroProductos from './views/RegistroProductos';
 
 /*Context*/
 import Context  from './contextproduct';
+import ContextUser from './context'
 
 const App = () => {
+
+  const [usuario, setUsuario] = useState(null)
+  const [token, setToken] = useState(null)
 
   const storedCart = localStorage.getItem('cart');
   const [cart, setCart] = useState(storedCart ? JSON.parse(storedCart) : []);
@@ -31,7 +35,9 @@ const App = () => {
   return ( 
     <div>
       <BrowserRouter>
-      <Context.Provider value={{ cart, setCart }}>
+      
+        <ContextUser.Provider value={{ usuario, setUsuario, token, setToken }}>
+          <Context.Provider value={{ cart, setCart}}>
         <Routes>
           <Route path="/" element={<Home/>} />  
           <Route path="/login" element={<Login/>} />      
@@ -44,7 +50,9 @@ const App = () => {
           <Route path="/perfil" element={<Profile/>} /> 
           <Route path="/registrar-producto" element={<RegistroProductos/>} />    
         </Routes>
-      </Context.Provider>      
+        </Context.Provider>
+        </ContextUser.Provider>
+           
       </BrowserRouter>    
     </div>       
   );

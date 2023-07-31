@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState, useEffect} from "react";
 
 /* Bootstrap */
 import Button from "react-bootstrap/Button";
@@ -6,6 +6,9 @@ import Button from "react-bootstrap/Button";
 /*Components*/
 import Navbar from "../components/Nav";
 import Footer from "../components/Footer";
+
+/*Axios */
+import axios from "axios";
 
 /*React Router Dom*/
 import { useNavigate, useParams} from 'react-router-dom';
@@ -17,7 +20,8 @@ import { products_variant } from "../data/Products_variants";
 import ProductCard from "../components/ProductCard";
 
 /* Context */
-import  Context  from "../contextproduct";
+import Context  from "../contextproduct";
+import ContextUser from "../context";
 import { useContext } from 'react';
 
 import { Link } from "react-router-dom";
@@ -32,6 +36,38 @@ const Profile = () => {
 
     /*Añade productos al cart*/
     const { cart, setCart } = useContext(Context);  
+
+    /* Usuario */
+    const { setUsuario: setUsuarioGlobal } = useContext(ContextUser);
+
+    console.log(localStorage)
+  
+    const [usuario, setUsuarioLocal] = useState({});
+  
+    const { token } = useContext(Context);
+
+    const getUsuarioData = async () => {
+        const urlServer = "http://localhost:3002";
+        const endpoint = "/users";
+         try {
+          const { data } = await axios.get(urlServer + endpoint, {
+            headers: { Authorization: "Bearer " + token },
+          });
+          setUsuarioGlobal(data);
+          setUsuarioLocal(data);
+        } catch(error) {
+          
+          alert(error + " 🙁");
+        //catch ({ response: { data: message } }) {
+          //alert(message + " 🙁");
+          //console.log(message);
+        }
+      };
+
+      useEffect(() => {
+        getUsuarioData();
+      },[]);
+    
     
     
 

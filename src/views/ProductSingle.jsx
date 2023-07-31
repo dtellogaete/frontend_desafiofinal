@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 
 /* Bootstrap */
 import Button from "react-bootstrap/Button";
@@ -24,7 +24,24 @@ const ProductSingle = () => {
 
     const { id } = useParams();
 
-    const product = products_variant.find((product) => product.id_product_variant === parseInt(id));
+    const [product, setProduct] = useState('');
+
+    /* Obtener productos */
+    const getProduct = (id_product) => {
+        fetch('http://localhost:3002/products/' + id_product)
+        .then(response => response.json())
+        .then(data => {
+            console.log(data);
+            setProduct(data);
+        })
+        .catch(error => console.error('Error:', error));
+    }
+
+    useEffect(() => {
+        getProduct(id);
+    }, []);
+
+    console.log(product);    
 
     const products = products_variant;
 
@@ -83,7 +100,7 @@ const ProductSingle = () => {
                     <div className="row">
                         <div className="col-md-5">
                         <div className="single-product-img">
-                            <img src="https://pymstatic.com/27652/conversions/manzanilla-wide.jpg" alt="" />
+                            <img src={product.photo} alt="" />
                         </div>
                         </div>
                         <div className="col-md-7">
