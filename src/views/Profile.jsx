@@ -167,7 +167,7 @@ const getProducts = () => {
                             <p><strong>Región:</strong> {usuario.region}</p>
                             <p><strong>Teléfono:</strong> {usuario.telephone}</p>
                             {/* Rol de Usuario Tienda */}
-                            ( usuario.role === "tienda" && {
+                            {usuario.role === "tienda" && (
                                 <div>
                                    <h4>Tienda:</h4>
                                    <p><strong>Nombre de la tienda:</strong> {usuario.store_name}</p>
@@ -176,7 +176,7 @@ const getProducts = () => {
                                    <p><strong>Ciudad de la tienda:</strong> {usuario.store_city}</p>
                                    <p><strong>Región de la tienda:</strong> {usuario.store_region}</p>
                                 </div>
-                            })
+                            )}
                          
                             <p><Button className="btn-success">Editar</Button></p>
                             <p><Button className="btn-success">
