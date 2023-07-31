@@ -30,14 +30,28 @@ const Marketplace = () => {
 
     /* Obtener productos */
     const getProducts = () => {
-        fetch('http://localhost:3002/products/')
-        .then(response => response.json())
-        .then(data => {
-            console.log(data);
-            setProducts(data);
-        })
-        .catch(error => console.error('Error:', error));
-    }
+        try {
+          fetch('http://localhost:3002/products/')
+            .then(response => {
+              if (!response.ok) {
+                throw new Error('Network response was not ok'); 
+              }
+              return response.json();
+            })
+            .then(data => {
+              console.log(data);
+              setProducts(data);
+            })
+            .catch(error => {
+              console.error('Error:', error); 
+              
+            });
+        } catch (error) {
+          console.error('Error:', error); 
+         
+        }
+    };
+      
 
     useEffect(() => {
         getProducts();

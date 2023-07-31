@@ -32,7 +32,7 @@ const Profile = () => {
 
     const product = products_variant.find((product) => product.id_product_variant === parseInt(id));
 
-    const products = products_variant;
+    
 
     /*Añade productos al cart*/
     const { cart, setCart } = useContext(Context);  
@@ -44,14 +44,17 @@ const Profile = () => {
   
     const [usuario, setUsuarioLocal] = useState({});
   
-    const { token } = useContext(Context);
+    const { token } = useContext(ContextUser);
 
+    console.log("tokeeeeeeeeeeeeeeeeeeeeen",token)
+
+    /* Obtener datos del usuario */
     const getUsuarioData = async () => {
         const urlServer = "http://localhost:3002";
         const endpoint = "/users";
          try {
           const { data } = await axios.get(urlServer + endpoint, {
-            headers: { Authorization: "Bearer " + token },
+            headers: { Authorization: "Bearer " + token.token },
           });
           setUsuarioGlobal(data);
           setUsuarioLocal(data);
@@ -64,11 +67,53 @@ const Profile = () => {
         }
       };
 
+    /* Obtener productos del usuario */
+    const [products, setProducts] = useState([]);
+    /*
+
+
+app.get('/products/users/:id', async (req, res) => {
+    try {
+        const { id } = req.params;
+        const products = await getProductUsers(id);
+        res.status(200).json(products);
+        }
+        catch (error) {
+        res.status(500).json({ error: 'Internal Server Error', errorMessage: error.message });
+        }
+}
+)*/
+const getProducts = () => {
+    try {
+      fetch(`http://localhost:3002/products/users/1`)
+        .then(response => {
+          if (!response.ok) {
+            throw new Error('Network response was not ok'); 
+          }
+          return response.json();
+        })
+        .then(data => {
+          console.log(data);
+          setProducts(data);
+        })
+        .catch(error => {
+          console.error('Error:', error); 
+          
+        });
+    } catch (error) {
+      console.error('Error:', error); 
+     
+    }
+};
+
+
       useEffect(() => {
         getUsuarioData();
+        getProducts();
       },[]);
-    
-    
+
+      console.log(usuario)  
+      console.log("producto",products)
     
 
     // Formato peso chileno
@@ -78,23 +123,7 @@ const Profile = () => {
           currency: 'CLP',
         }).format(price);
     } 
-
-    const user = {
-        nombre: 'Juan',
-        apellido: 'Pérez',
-        email: 'juan.perez@gmail.com',
-        rut: '12.345.678-9',
-        direccion: 'Alameda 123',
-        ciudad: 'Santiago',
-        region: 'Metropolitana',
-        telefono: '+56 9 1234 5678',
-        rol: 'Tienda',
-        nombreTienda: 'Tienda de Hierbas Naturales',
-        razonSocialTienda: 'Natural Herbs Ltd.',
-        rutTienda: '98.765.432-1',
-        ciudadTienda: 'Santiago',
-        regionTienda: 'Metropolitana',
-      };
+ 
 
     return (
         <>
@@ -106,7 +135,7 @@ const Profile = () => {
                     <div className="row">
                         <div className="col-lg-8 offset-lg-2 text-center">
                         <div className="breadcrumb-text">                            
-                            <h1>Perfil</h1>
+                            <h1>{`Perfil - ${usuario.name} ${usuario.lastname}`}</h1>
                         </div>
                         </div>
                     </div>
@@ -127,22 +156,28 @@ const Profile = () => {
                         </div>
                         <div className="col-md-7">
                             <div className="single-product-content">
-                            <h3>{`${user.nombre} ${user.apellido}`}</h3>
+                            <h3>{`${usuario.name} ${usuario.lastname}`}</h3>
                             <p className="single-product-pricing">
-                                <span>Rol: {user.rol}</span>
+                                <span>Rol: {usuario.role}</span>
                             </p>
-                            <p><strong>Email:</strong> {user.email}</p>
-                            <p><strong>RUT:</strong> {user.rut}</p>
-                            <p><strong>Dirección:</strong> {user.direccion}</p>
-                            <p><strong>Ciudad:</strong> {user.ciudad}</p>
-                            <p><strong>Región:</strong> {user.region}</p>
-                            <p><strong>Teléfono:</strong> {user.telefono}</p>
-                            <h4>Tienda:</h4>
-                            <p><strong>Nombre de la tienda:</strong> {user.nombreTienda}</p>
-                            <p><strong>Razón Social:</strong> {user.razonSocialTienda}</p>
-                            <p><strong>RUT de la tienda:</strong> {user.rutTienda}</p>
-                            <p><strong>Ciudad de la tienda:</strong> {user.ciudadTienda}</p>
-                            <p><strong>Región de la tienda:</strong> {user.regionTienda}</p>
+                            <p><strong>Email:</strong> {usuario.email}</p>
+                            <p><strong>RUT:</strong> {usuario.rut}</p>
+                            <p><strong>Dirección:</strong> {usuario.address}</p>
+                            <p><strong>Ciudad:</strong> {usuario.city}</p>
+                            <p><strong>Región:</strong> {usuario.region}</p>
+                            <p><strong>Teléfono:</strong> {usuario.telephone}</p>
+                            {/* Rol de Usuario Tienda */}
+                            ( usuario.role === "tienda" && {
+                                <div>
+                                   <h4>Tienda:</h4>
+                                   <p><strong>Nombre de la tienda:</strong> {usuario.store_name}</p>
+                                   <p><strong>Razón Social:</strong> {usuario.store_razon}</p>
+                                   <p><strong>RUT de la tienda:</strong> {usuario.store_rut}</p>
+                                   <p><strong>Ciudad de la tienda:</strong> {usuario.store_city}</p>
+                                   <p><strong>Región de la tienda:</strong> {usuario.store_region}</p>
+                                </div>
+                            })
+                         
                             <p><Button className="btn-success">Editar</Button></p>
                             <p><Button className="btn-success">
                                 <Link to="/registrar-producto" style={{color:"#fff", textDecoration: "none", outline: "none"}}>Agregar Productos</Link>
@@ -176,11 +211,14 @@ const Profile = () => {
                                 {products.map((product) => (
                                 <tr key={product.id_product_variant}>
                                     <td>{product.name}</td>
-                                    <td>{product.variante}</td>
+                                    <td>{product.variant}</td>
                                     <td>{product.stock}</td>
                                     <td>${product.price}</td>
                                     <td>
                                     <Button variant="success">Editar</Button>
+                                    </td>
+                                    <td>
+                                    <Button variant="danger">Borrar</Button>
                                     </td>
                                 </tr>
                                 ))}
