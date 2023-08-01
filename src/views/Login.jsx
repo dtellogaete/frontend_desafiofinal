@@ -10,6 +10,9 @@ import Footer from '../components/Footer';
 import ContextUser from "../context";
 
 const Login = () => {
+
+  console.log("localstorage",localStorage)
+
     const navigate = useNavigate();
     const { setUsuario } = useContext(ContextUser);
     const {setToken} = useContext(ContextUser);

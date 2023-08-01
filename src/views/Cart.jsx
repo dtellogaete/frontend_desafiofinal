@@ -17,11 +17,23 @@ import { products_variant } from '../data/Products_variants';
 import Navbar from '../components/Nav';
 import Footer from '../components/Footer';
 
+/* Navigate */
+import { useNavigate } from "react-router-dom";
+
+/* Context */
+import ContextUser from "../context";
+
+
 const Cart =  () => {   
     
   const products = products_variant;
 
   const { cart, setCart } = useContext(Context);  
+
+  /* Usuario Validacion*/
+  const { setUsuario: setUsuarioGlobal } = useContext(ContextUser); 
+  const [usuario, setUsuarioLocal] = useState({});  
+  const { token } = useContext(ContextUser);
 
   /*Añade productos al cart*/
   const addToCart = (id) => {    
@@ -112,6 +124,8 @@ const Cart =  () => {
       const { id, value } = e.target;
       setFormData({ ...formData, [id]: value });
   };
+
+  console.log(formData)
         
   // Lista de regiones de Chile
   const regionesChile = [
@@ -132,6 +146,12 @@ const Cart =  () => {
     'Aysén del General Carlos Ibáñez del Campo',
     'Magallanes y de la Antártica Chilena',
   ];      
+
+ 
+
+
+
+
 
   return (
     <>

@@ -24,26 +24,25 @@ import Context  from "../contextproduct";
 import ContextUser from "../context";
 import { useContext } from 'react';
 
-import { Link } from "react-router-dom";
+import { Link} from "react-router-dom";
+
 
 const Profile = () => {
 
     const { id } = useParams();
 
-    const product = products_variant.find((product) => product.id_product_variant === parseInt(id));
+    
+    //Navigate
+    const navigate = useNavigate();
 
     
 
     /*Añade productos al cart*/
     const { cart, setCart } = useContext(Context);  
 
-    /* Usuario */
-    const { setUsuario: setUsuarioGlobal } = useContext(ContextUser);
-
-    console.log(localStorage)
-  
-    const [usuario, setUsuarioLocal] = useState({});
-  
+    /* Usuario Validacion*/
+    const { setUsuario: setUsuarioGlobal } = useContext(ContextUser); 
+    const [usuario, setUsuarioLocal] = useState({});  
     const { token } = useContext(ContextUser);
 
     console.log("tokeeeeeeeeeeeeeeeeeeeeen",token)
@@ -59,8 +58,9 @@ const Profile = () => {
           setUsuarioGlobal(data);
           setUsuarioLocal(data);
         } catch(error) {
+            navigate("/")
           
-          alert(error + " 🙁");
+          console.log(error + " 🙁");
         //catch ({ response: { data: message } }) {
           //alert(message + " 🙁");
           //console.log(message);
@@ -110,6 +110,9 @@ const getProducts = () => {
       useEffect(() => {
         getUsuarioData();
         getProducts();
+        if (usuario === null) {
+          navigate("/");
+        }
       },[]);
 
       console.log(usuario)  
@@ -167,7 +170,7 @@ const getProducts = () => {
                             <p><strong>Región:</strong> {usuario.region}</p>
                             <p><strong>Teléfono:</strong> {usuario.telephone}</p>
                             {/* Rol de Usuario Tienda */}
-                            {usuario.role === "tienda" && (
+                            {usuario.role === "Tienda" && (
                                 <div>
                                    <h4>Tienda:</h4>
                                    <p><strong>Nombre de la tienda:</strong> {usuario.store_name}</p>
@@ -179,10 +182,13 @@ const getProducts = () => {
                             )}
                          
                             <p><Button className="btn-success">Editar</Button></p>
-                            <p><Button className="btn-success">
+                            {usuario.role === "Tienda" && (
+                                <p><Button className="btn-success">
                                 <Link to="/registrar-producto" style={{color:"#fff", textDecoration: "none", outline: "none"}}>Agregar Productos</Link>
                                 </Button>
-                            </p>                          
+                                </p>   
+                            )}
+                                                   
                             </div>
                         </div>
                         </div>

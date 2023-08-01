@@ -1,8 +1,66 @@
-import React, { useState } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+
+/* Axios */
+import axios from 'axios';
+
+/* Context */
+import ContextUser from "../context";
+
+/* Navigate */
+import { useNavigate } from "react-router-dom";
 
 const Navbar = () => {
   const [isMenuOpen, setMenuOpen] = useState(true);
+
+  /* token */
+  const { token } = useContext(ContextUser);
+
+  const { usuario } = useContext(ContextUser);
+  const { setUsuario } = useContext(ContextUser);
+
+
+  console.log("localstorage",localStorage)
+  console.log("usuario",usuario)
+
+  const getUsuarioData = async () => {
+    const urlServer = "http://localhost:3002";
+    const endpoint = "/users";
+     try {
+      const { data } = await axios.get(urlServer + endpoint, {
+        headers: { Authorization: "Bearer " + token.token },
+      });
+      
+    } catch(error) {
+      
+      console.log(error + " 🙁");
+    //catch ({ response: { data: message } }) {
+      //alert(message + " 🙁");
+      //console.log(message);
+    }
+  };
+
+  useEffect(() => {
+    getUsuarioData();
+  }, []);
+
+  /* Cerrar Sesión*/
+
+  const navigate = useNavigate();
+
+  const cerrarSesion = () => {
+    // Elimina el token del Local Storage
+    localStorage.removeItem("token");
+
+    
+    setUsuario(null); // O setUsuario({})
+    
+    navigate('/');
+  };
+
+
+
+ 
 
   const handleMenuToggle = () => {
     setMenuOpen(!isMenuOpen);
@@ -32,17 +90,24 @@ const Navbar = () => {
                 {/* menu start */}
                 <nav className={`main-menu ${isMenuOpen ? 'open' : ''}`}>
                   <ul>
-                    <li className="current-list-item">
-                      <Link to="/">Home</Link>
-                    </li>
+                  {usuario && (
+                    <>
+                      {/* Aquí pon los elementos que deseas mostrar cuando usuario tiene propiedades */}
+                      <li><Link to="/perfil">Perfil</Link></li>
+                      <li><Link onClick={cerrarSesion} to="/">Cerrar sesión</Link></li>
+                    </>
+                    )}
+                    {/* Otras partes del componente */}
+                    {!usuario && (
+                      <>
+                        {/* Aquí pon los elementos que deseas mostrar cuando usuario está vacío */}
+                        <li><Link to="/login">Log In</Link></li>
+                        <li><Link to="/registro">Registro</Link></li>
+                      </>
+                    )}
                     <li>
-                      <Link to="/market">Marketplace</Link>
+                      <Link to="/market">MarketPlace</Link>
                     </li>
-                    <li>
-                      <Link to="/perfil">Perfil</Link>
-                    </li>
-                    <li><Link to="login">Log In</Link></li>
-                    <li><Link to="/registro">Registro</Link></li>
                     <li>
                       <Link to="/contact">Contacto</Link>
                     </li>

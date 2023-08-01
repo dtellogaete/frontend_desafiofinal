@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-
+/* axios */
+import axios from "axios";
 
 /* Componentes  */
 import Navbar from '../components/Nav';
@@ -57,10 +58,10 @@ const Registro = () => {
     console.log(usuario)
 
     const registrarUsuario = async () => {
-        const urlServer = "http://localhost:3000";
-        const endpoint = "";
+        const urlServer = "http://localhost:3002";
+        const endpoint = "/users";
         try {
-          //await axios.post(urlServer + endpoint, usuario);
+          await axios.post(urlServer + endpoint, usuario);
           alert("Usuario registrado con éxito");
           navigate("/login");
         } catch (error) {
@@ -124,7 +125,7 @@ const Registro = () => {
               className="form-control"
               placeholder="contraseña"
             />
-          </div>
+          </div>          
           <div className="form-group mt-1 ">
             <label>Ingrese su Nro de Teléfono</label>
             <input
@@ -137,22 +138,7 @@ const Registro = () => {
             />
           </div>
         <div className="form-group mt-1 ">
-        <label>Rol</label>
-        <select
-          value={usuario.role}
-          onChange={handleSetUsuario}
-          name="role"
-          className="form-select"
-        >
-          <option>
-            Seleccione un rol:
-          </option>
-          <option value="Persona">Persona</option>
-          <option value="Tienda">Tienda</option>
-        </select>
-
-
-        {registroUsuario ? <>
+               
           <h1>Datos Personales</h1>
           <div className="form-group mt-1 ">
             <label>Ingrese su Nombre</label>
@@ -240,7 +226,21 @@ const Registro = () => {
               placeholder="Calle / Nro"
             />
           </div>
-          </> : null}
+          {/* Rol */}
+          <label>Rol</label> 
+          <select
+            value={usuario.role}
+            onChange={handleSetUsuario}
+            name="role"
+            className="form-select"
+          >
+            <option>
+              Seleccione un rol:
+            </option>
+            <option value="Persona">Persona</option>
+            <option value="Tienda">Tienda</option>
+          </select>
+          
           
 
           
