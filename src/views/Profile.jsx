@@ -83,39 +83,73 @@ app.get('/products/users/:id', async (req, res) => {
         }
 }
 )*/
+const [isLoading, setIsLoading] = useState(true); // Estado de carga
+
 const getProducts = () => {
     try {
-      fetch(`http://localhost:3002/products/users/1`)
-        .then(response => {
-          if (!response.ok) {
-            throw new Error('Network response was not ok'); 
-          }
-          return response.json();
-        })
-        .then(data => {
-          console.log(data);
-          setProducts(data);
-        })
-        .catch(error => {
-          console.error('Error:', error); 
-          
-        });
+        fetch(`http://localhost:3002/products/users/${usuario.id_users}`)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok'); 
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log(data);
+                setProducts(data);
+                setIsLoading(false); // Cambiar el estado de carga al completar la carga
+            })
+            .catch(error => {
+                console.error('Error:', error); 
+            });
     } catch (error) {
-      console.error('Error:', error); 
-     
+        console.error('Error:', error); 
+    }
+};
+
+const [tickets, setTickets] = useState([{}]);
+
+const getTicketId = () => {
+    try {
+        fetch(`http://localhost:3002/tickets/users/${usuario.id_users}`)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok'); 
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log(data);
+                setTickets(data);
+                setIsLoading(false); // Cambiar el estado de carga al completar la carga
+            })
+            .catch(error => {
+                console.error('Error:', error); 
+            });
+    } catch (error) {
+        console.error('Error:', error); 
     }
 };
 
 
-      useEffect(() => {
-        getUsuarioData();
-        getProducts();
-        if (usuario === null) {
-          navigate("/");
-        }
-      },[]);
 
-      console.log(usuario)  
+
+useEffect(() => {
+    getUsuarioData();
+    getProducts();
+    //getTicketId();
+    if (usuario === null) {
+        navigate("/");
+    }
+},[]);
+
+// Renderizado condicional del "loading"
+if (isLoading) {
+    return <div>Cargando...</div>;
+}
+
+
+      console.log("usaurio id", usuario.id_users)  
       console.log("producto",products)
     
 
@@ -211,6 +245,53 @@ const getProducts = () => {
                                 <th>Stock</th>
                                 <th>Precio</th>
                                 <th>Editar</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {products.map((product) => (
+                                <tr key={product.id_product_variant}>
+                                    <td>{product.name}</td>
+                                    <td>{product.variant}</td>
+                                    <td>{product.stock}</td>
+                                    <td>${product.price}</td>
+                                    <td>
+                                    <Button variant="success">Editar</Button>
+                                    </td>
+                                    <td>
+                                    <Button variant="danger">Borrar</Button>
+                                    </td>
+                                </tr>
+                                ))}
+                            </tbody>
+                            </table>
+                        </div>
+                            
+                        </div>
+                        </div>
+                    </div>
+                    <div className="row">
+                        
+                        {/*Components Product Card */}      
+                        
+                        
+                    </div>
+                    </div>
+                </div>
+                {/* end more products */}
+                {/* more products */}
+                <div className="more-products mb-150">
+                    <div className="container">
+                    <div className="row">
+                        <div className="col-lg-8 offset-lg-2 text-center">
+                        <div className="section-title">	
+                            <h3><span className="orange-text">Mis</span> Compras</h3>
+                            <div className="table-responsive">
+                            <table className="table table-bordered table-striped">
+                            <thead>
+                                <tr>
+                                <th>Ticket</th>                              
+                                <th>Fecha</th>
+                                <th>Total</th>
                                 </tr>
                             </thead>
                             <tbody>

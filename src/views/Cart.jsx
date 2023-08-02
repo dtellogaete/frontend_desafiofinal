@@ -23,10 +23,16 @@ import { useNavigate } from "react-router-dom";
 /* Context */
 import ContextUser from "../context";
 
+/* axios */
+import axios from 'axios';
+import { get, set } from "react-hook-form";
+
 
 const Cart =  () => {   
     
   const products = products_variant;
+
+  const navigate = useNavigate();
 
   const { cart, setCart } = useContext(Context);  
 
@@ -34,6 +40,26 @@ const Cart =  () => {
   const { setUsuario: setUsuarioGlobal } = useContext(ContextUser); 
   const [usuario, setUsuarioLocal] = useState({});  
   const { token } = useContext(ContextUser);
+
+      /* Obtener datos del usuario */
+      const getUsuarioData = async () => {
+        const urlServer = "http://localhost:3002";
+        const endpoint = "/users";
+         try {
+          const { data } = await axios.get(urlServer + endpoint, {
+            headers: { Authorization: "Bearer " + token.token },
+          });
+          setUsuarioGlobal(data);
+          setUsuarioLocal(data);
+        } catch(error) {
+            
+          
+          console.log(error + " 🙁");
+        //catch ({ response: { data: message } }) {
+          //alert(message + " 🙁");
+          //console.log(message);
+        }
+      };
 
   /*Añade productos al cart*/
   const addToCart = (id) => {    
@@ -69,33 +95,35 @@ const Cart =  () => {
 
   //Formulario tickets         
   const [formData, setFormData] = useState({
-      
-      doc_sii: '',
-      date: '',
+      id_users: '',      
       subtotal: '',
       total: '',
       contact: '',
       telephone: '',
       rut: '',
       city: '',
-      region: '',
       razon_social: '',
       pay_method: '',
-      status: '',
-      city_ship: '',
-      address_ship: '',
-      region_ship: '',
-      // ...otras variables del formulario...
-  });
+      dateticket: '',
+      doc_sii: '',
+      region: '',
+      city_shipping: '',
+      region_shipping: '',
+      address_shipping: '',
+            
+  }); 
+
+  console.log("formdata", formData)
+  console.log("usuasrio dsadasdsa ", usuario)
 
   //Calculo de variables finales
   const [subtotal, setSubtotal] = useState(0);
   const [total, setTotal] = useState(0);
   const [shippingCost, setShippingCost] = useState(0);
   const [totalConEnvio, setTotalConEnvio] = useState(0);
-
       
   useEffect(() => {
+    getUsuarioData();
     // Calcular el subtotal
     const newSubtotal = cart.reduce((subtotal, item) => {
       const product = products.find((p) => p.id_product_variant == item.id);
@@ -118,14 +146,77 @@ const Cart =  () => {
     setTotalConEnvio(newTotalConEnvio);
   }, [cart, products]);
 
-
   // HandleChange
   const handleChange = (e) => {
-      const { id, value } = e.target;
-      setFormData({ ...formData, [id]: value });
-  };
+    const { id, value } = e.target;
+    // Zona horaria de Santiago
+    const santiagoTime = new Date().toLocaleString("en-US", { timeZone: "America/Santiago" });
+    // Convierte la hora de Santiago a un UNIX timestamp
+    const unixTimestamp = new Date(santiagoTime).getTime() / 1000;
+    const id_users = usuario.id_users;
+    //Total y subtotal
+    
+    setFormData({ ...formData, [id]: value, 
+                  dateticket: unixTimestamp, 
+                  id_users: id_users,
+                  total: subtotal+shippingCost,
+                  subtotal: subtotal/1.19, });                  
+};
 
   console.log(formData)
+
+  // post ticket detail
+  const addTicketDetail = async (dataProduct) => {
+    try {
+      const urlServer = "http://localhost:3002";
+      const endpoint = '/ticketdetail';
+      const response = await axios.post(urlServer + endpoint, dataProduct);
+      console.log('Respuesta del servidor:', response.data);
+      alert('Ticket enviado con éxito');
+      // Realiza las acciones necesarias después de registrar el producto
+      } catch (error) {
+      console.log('Error al registrar el producto:', error);
+      }
+  };
+
+  // Post ticket
+  const [idTicket, setIdTicket] = useState(0);
+
+  const addTicket = async () => {
+    try {
+      const urlServer = "http://localhost:3002";
+      const endpoint = '/tickets';
+      const response = await axios.post(urlServer + endpoint, formData);
+      console.log('Respuesta del servidor:', response.data);
+      
+      setIdTicket(response);
+      console.log("response", response.data)
+      // Realiza las acciones necesarias después de registrar el producto
+      } catch (error) {
+      console.log('Error al registrar el producto:', error);
+      }
+  };
+
+   const addTicketCart = async () => {      
+
+    try {
+      addTicket();
+      cart.forEach((item) => {
+        let data = {
+          id_tickets: idTicket.data,
+          id_products: item.id,
+          quantity: item.cantidad,        
+        }
+        console.log(data)
+        addTicketDetail(data);
+        
+      });
+      alert('Compra exitosa!')
+    } catch (error) {
+      console.log('Error al registrar el producto:', error);
+      alert('Error al registrar el producto:', error)
+    }
+  };
         
   // Lista de regiones de Chile
   const regionesChile = [
@@ -146,12 +237,6 @@ const Cart =  () => {
     'Aysén del General Carlos Ibáñez del Campo',
     'Magallanes y de la Antártica Chilena',
   ];      
-
- 
-
-
-
-
 
   return (
     <>
@@ -308,17 +393,43 @@ const Cart =  () => {
                       value={formData.telephone}
                       onChange={handleChange}
                     />
+                  </Form.Group>                
+
+                  <Form.Label style={{paddingBottom: '10px', paddingTop: '10px'}}><h4>Datos de Facturación</h4></Form.Label>
+                  <Form.Group className="mb-3" controlId="doc_sii">
+                    <Form.Label>Tipo de Documento</Form.Label>
+                    <Form.Control
+                      as="select"
+                      value={formData.doc_sii}
+                      onChange={handleChange}
+                    >
+                      <option value="">Selecciona una opción</option>
+                      <option value="Boleta">Boleta</option>
+                      <option value="Factura">Factura</option>
+                    </Form.Control>
                   </Form.Group>
                   <Form.Group className="mb-3" controlId="rut">
-                    <Form.Label>RUT</Form.Label>
-                    <Form.Control
-                      type="text"
-                      placeholder="RUT"
-                      value={formData.rut}
-                      onChange={handleChange}
-                    />
-                  </Form.Group>
-                  <Form.Group className="mb-3" controlId="city">
+                      <Form.Label>RUT </Form.Label>
+                      <Form.Control
+                        type="text"
+                        placeholder="RUT "
+                        value={formData.rut}
+                        onChange={handleChange}
+                      />
+                    </Form.Group>
+                  {/* Mostrar campos adicionales solo si se selecciona "Factura" */}
+                  {formData.doc_sii === 'Factura' && (
+                  <>
+                    <Form.Group className="mb-3" controlId="razon_social">
+                      <Form.Label>Razón Social</Form.Label>
+                      <Form.Control
+                        type="text"
+                        placeholder="Razón Social"
+                        value={formData.razon_social}
+                        onChange={handleChange}
+                      />
+                    </Form.Group>                    
+                    <Form.Group className="mb-3" controlId="city">
                     <Form.Label>Ciudad</Form.Label>
                     <Form.Control
                       type="text"
@@ -342,43 +453,8 @@ const Cart =  () => {
                       ))}
                     </Form.Control>
                   </Form.Group>
-                  <Form.Label style={{paddingBottom: '10px', paddingTop: '10px'}}><h4>Datos de Facturación</h4></Form.Label>
-                  <Form.Group className="mb-3" controlId="doc_sii">
-                    <Form.Label>Tipo de Documento</Form.Label>
-                    <Form.Control
-                      as="select"
-                      value={formData.doc_sii}
-                      onChange={handleChange}
-                    >
-                      <option value="">Selecciona una opción</option>
-                      <option value="Boleta">Boleta</option>
-                      <option value="Factura">Factura</option>
-                    </Form.Control>
-                  </Form.Group>
-                  {/* Mostrar campos adicionales solo si se selecciona "Factura" */}
-                  {formData.doc_sii === 'Factura' && (
-                  <>
-                    <Form.Group className="mb-3" controlId="razon_social">
-                      <Form.Label>Razón Social</Form.Label>
-                      <Form.Control
-                        type="text"
-                        placeholder="Razón Social"
-                        value={formData.razon_social}
-                        onChange={handleChange}
-                      />
-                    </Form.Group>
-
-                    <Form.Group className="mb-3" controlId="rut_razon_social">
-                      <Form.Label>RUT Razón Social</Form.Label>
-                      <Form.Control
-                        type="text"
-                        placeholder="RUT Razón Social"
-                        value={formData.rut_razon_social}
-                        onChange={handleChange}
-                      />
-                    </Form.Group>
                   </>
-                  )}
+                  )}               
                   <Form.Label style={{paddingBottom: '10px', paddingTop: '10px'}}><h4>Datos Bancarios</h4></Form.Label>
                   <Form.Group className="mb-3" controlId="pay_method">
                     <Form.Label>Tarjeta de Crédito</Form.Label>
@@ -390,29 +466,29 @@ const Cart =  () => {
                     />
                   </Form.Group>
                   <Form.Label style={{paddingBottom: '10px', paddingTop: '10px'}}><h4>Datos de Envío</h4></Form.Label>
-                <Form.Group className="mb-3" controlId="city_ship">
+                <Form.Group className="mb-3" controlId="city_shipping">
                   <Form.Label>Ciudad de Envío</Form.Label>
                   <Form.Control
                     type="text"
                     placeholder="Ciudad de Envío"
-                    value={formData.city_ship}
+                    value={formData.city_shipping}
                     onChange={handleChange}
                   />
                 </Form.Group>
-                <Form.Group className="mb-3" controlId="address_ship">
+                <Form.Group className="mb-3" controlId="address_shipping">
                   <Form.Label>Dirección de Envío</Form.Label>
                   <Form.Control
                     type="text"
                     placeholder="Dirección de Envío"
-                    value={formData.address_ship}
+                    value={formData.address_shipping}
                     onChange={handleChange}
                   />
                 </Form.Group>
-                <Form.Group className="mb-3" controlId="region_ship">
+                <Form.Group className="mb-3" controlId="region_shipping">
                   <Form.Label>Región de Envío</Form.Label>
                   <Form.Control
                     as="select"
-                    value={formData.region_ship}
+                    value={formData.region_shipping}
                     onChange={handleChange}
                   >
                     <option value="">Selecciona una región</option>
@@ -423,7 +499,7 @@ const Cart =  () => {
                     ))}
                   </Form.Control>
                 </Form.Group>                            
-                <Button variant="success" >
+                <Button variant="success" onClick={() => addTicketCart()} >
                   Comprar
                 </Button>
                 </Form>    

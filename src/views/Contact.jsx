@@ -1,11 +1,57 @@
-import React from "react";
+import React, {useState, useEffect} from "react";
 
 /*Components*/
 import Navbar from "../components/Nav";
 import Footer from "../components/Footer";
 
+/* Axios */
+import axios from 'axios';
+
+/* Button Bootstrap */
+import Button from "react-bootstrap/Button";
+
+/* React Router  */
+import { useNavigate } from "react-router-dom";
 
 const Contact = () => {
+
+    /* Navigate */
+    const navigate = useNavigate();
+
+    /* Post contact */
+    const [contact, setContact] = useState({
+        name: '',
+        email: '',
+        phone: '',
+        subject: '',
+        message: ''
+    });
+
+    const handleInputChange = (event) => {
+        const { name, value } = event.target;
+        setContact((prevContact) => ({
+            ...prevContact,
+            [name]: value
+        }));
+    };
+
+    console.log("contacto", contact)
+
+    const addContact = async () => {
+        try {
+            const urlServer = "http://localhost:3002";
+            const endpoint = '/contact';
+            const response = await axios.post(urlServer + endpoint, contact); 
+            console.log('Respuesta del servidor:', response.data);
+            alert('Mensaje enviado con éxito');
+            navigate('/');
+            // Realiza las acciones necesarias después de registrar el producto
+            } catch (error) {
+            console.log('Error al registrar el producto:', error);
+            }
+        };   
+
+
     return (
         <>
         <div>
@@ -27,10 +73,7 @@ const Contact = () => {
             </div>
         </div>
         {/* end breadcrumb section */}
-        </>
-
-        
-        
+        </>       
         {/* contact form */}
         <div className="contact-from-section mt-150 mb-150">
             <div className="container">
@@ -50,27 +93,30 @@ const Contact = () => {
                     onsubmit="return valid_datas( this );"
                     >
                     <p>
-                        <input type="text" placeholder="Nombre" name="name" id="name" />
+                        <input type="text" placeholder="Nombre" name="name" id="name" onChange={handleInputChange} />
                         <input
                         type="email"
                         placeholder="Email"
                         name="email"
                         id="email"
+                        onChange={handleInputChange}
                         />
                     </p>
                     <p>
-                        <input type="tel" placeholder="Teléfono" name="phone" id="phone" />
+                        <input type="tel" placeholder="Teléfono" name="phone" id="phone" onChange={handleInputChange} />
                         <input
                         type="text"
                         placeholder="Asunto"
                         name="subject"
                         id="subject"
+                        onChange={handleInputChange}
                         />
                     </p>
                     <p>
                         <textarea
                         name="message"
                         id="message"
+                        onChange={handleInputChange}
                         cols={30}
                         rows={10}
                         placeholder="Escribe tu mensaje..."
@@ -79,7 +125,9 @@ const Contact = () => {
                     </p>
                     <input type="hidden" name="token" defaultValue="FsWga4&@f6aw" />
                     <p>
-                        <input type="submit" defaultValue="Submit" />
+                        < Button className="btn-success" onClick={() => addContact()} >
+                            Enviar mensaje
+                        </Button>
                     </p>
                     </form>
                 </div>
@@ -142,12 +190,10 @@ const Contact = () => {
   loading="lazy"
   referrerPolicy="no-referrer-when-downgrade"
 />
-
         </div>
         {/* end google map section */}
         <Footer></Footer>
-        </>
-        
+        </>   
 
     )
 };
