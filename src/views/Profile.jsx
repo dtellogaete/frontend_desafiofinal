@@ -57,6 +57,8 @@ const Profile = () => {
           });
           setUsuarioGlobal(data);
           setUsuarioLocal(data);
+          getProducts(data.id_users);
+          getTicketId(data.id_users);
         } catch(error) {
             navigate("/")
           
@@ -69,89 +71,82 @@ const Profile = () => {
 
     /* Obtener productos del usuario */
     const [products, setProducts] = useState([]);
-    /*
-
-
-app.get('/products/users/:id', async (req, res) => {
-    try {
-        const { id } = req.params;
-        const products = await getProductUsers(id);
-        res.status(200).json(products);
+    const getProducts = async (id_user) => {
+        try {
+            const urlServer = "http://localhost:3002";
+            const endpoint = `/products/users/${id_user}`;
+            
+            const response = await axios.get(urlServer + endpoint);
+            const data = response.data;
+            
+            setProducts(data);
+            console.log(data);
+        } catch (error) {
+            console.error('Error:', error);
         }
-        catch (error) {
-        res.status(500).json({ error: 'Internal Server Error', errorMessage: error.message });
+    };
+
+    //Obtener tickets del usuario
+    const [tickets, setTickets] = useState([]);
+
+    const getTicketId = async (id_user) => {
+        try {
+            const urlServer = "http://localhost:3002";
+            const endpoint = `/tickets/users/${id_user}`;
+    
+            const response = await axios.get(urlServer + endpoint);
+            const data = response.data;
+            console.log(data);
+            setTickets(data);
+        } catch (error) {
+            console.error('Error:', error);
         }
-}
-)*/
-const [isLoading, setIsLoading] = useState(true); // Estado de carga
+    };
+    
 
-const getProducts = () => {
-    try {
-        fetch(`http://localhost:3002/products/users/${usuario.id_users}`)
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok'); 
-                }
-                return response.json();
-            })
-            .then(data => {
-                console.log(data);
-                setProducts(data);
-                setIsLoading(false); // Cambiar el estado de carga al completar la carga
-            })
-            .catch(error => {
-                console.error('Error:', error); 
-            });
-    } catch (error) {
-        console.error('Error:', error); 
-    }
-};
+    useEffect(() => {
+    const fetchData = async () => {
+        try {
+            await getUsuarioData();            
+            
+            //getTicketId();
+        } catch (error) {
+            console.error('Error fetching data:', error);
+        }
+    };
+    console.log("usuario",usuario)
 
-const [tickets, setTickets] = useState([{}]);
-
-const getTicketId = () => {
-    try {
-        fetch(`http://localhost:3002/tickets/users/${usuario.id_users}`)
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok'); 
-                }
-                return response.json();
-            })
-            .then(data => {
-                console.log(data);
-                setTickets(data);
-                setIsLoading(false); // Cambiar el estado de carga al completar la carga
-            })
-            .catch(error => {
-                console.error('Error:', error); 
-            });
-    } catch (error) {
-        console.error('Error:', error); 
-    }
-};
+    fetchData();
 
 
 
-
-useEffect(() => {
-    getUsuarioData();
-    getProducts();
-    //getTicketId();
     if (usuario === null) {
         navigate("/");
     }
-},[]);
-
-// Renderizado condicional del "loading"
-if (isLoading) {
-    return <div>Cargando...</div>;
-}
+    }, []);
 
 
-      console.log("usaurio id", usuario.id_users)  
-      console.log("producto",products)
-    
+    /* Delete producto */
+    const deleteProduct = async (id_product_variant) => {
+        const isConfirmed = window.confirm(
+            "¿Está seguro que desea eliminar este producto? Esta acción es irreversible."
+        );
+
+        if (!isConfirmed) {
+            return; // El usuario canceló la eliminación
+        }
+
+        try {
+            const urlServer = "http://localhost:3002";
+            const endpoint = `/products/${id_product_variant}`;
+            const response = await axios.delete(urlServer + endpoint);
+            const data = response.data;
+            console.log(data);
+            getProducts(usuario.id_users);
+        } catch (error) {
+            console.error('Error:', error);
+        }
+    };   
 
     // Formato peso chileno
     const formatPrice = (price) => {
@@ -160,6 +155,19 @@ if (isLoading) {
           currency: 'CLP',
         }).format(price);
     } 
+
+    //Funcoion para transformar unix a fecha
+    function convertUnixToDate(unixTimestamp) {
+        const date = new Date(unixTimestamp * 1000); // Multiplica por 1000 para convertir segundos a milisegundos
+        const day = date.getDate().toString().padStart(2, '0');
+        const month = (date.getMonth() + 1).toString().padStart(2, '0'); // Los meses en JavaScript van de 0 a 11
+        const year = date.getFullYear();
+    
+        return `${day}-${month}-${year}`;
+    }
+    
+
+    
  
 
     return (
@@ -245,6 +253,7 @@ if (isLoading) {
                                 <th>Stock</th>
                                 <th>Precio</th>
                                 <th>Editar</th>
+                                <th>Borrar</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -253,12 +262,12 @@ if (isLoading) {
                                     <td>{product.name}</td>
                                     <td>{product.variant}</td>
                                     <td>{product.stock}</td>
-                                    <td>${product.price}</td>
+                                    <td>{formatPrice(product.price)}</td>
                                     <td>
                                     <Button variant="success">Editar</Button>
                                     </td>
                                     <td>
-                                    <Button variant="danger">Borrar</Button>
+                                    <Button variant="danger" onClick={()=> deleteProduct(product.id_products)}>Borrar</Button>
                                     </td>
                                 </tr>
                                 ))}
@@ -292,21 +301,20 @@ if (isLoading) {
                                 <th>Ticket</th>                              
                                 <th>Fecha</th>
                                 <th>Total</th>
+                                <th>Cancelar</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                {products.map((product) => (
-                                <tr key={product.id_product_variant}>
-                                    <td>{product.name}</td>
-                                    <td>{product.variant}</td>
-                                    <td>{product.stock}</td>
-                                    <td>${product.price}</td>
+                                {tickets.map((tik) => (
+                                <tr key={tik.id_tickets}>
+                                    <td>{tik.id_tickets}</td>
+                                    <td>{convertUnixToDate(tik.dateticket)}</td>
+                                    <td>{formatPrice(tik.total)}</td>
+                                 
                                     <td>
-                                    <Button variant="success">Editar</Button>
+                                    <Button variant="danger">Cancelar</Button>
                                     </td>
-                                    <td>
-                                    <Button variant="danger">Borrar</Button>
-                                    </td>
+                                    
                                 </tr>
                                 ))}
                             </tbody>
