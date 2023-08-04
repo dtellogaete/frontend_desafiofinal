@@ -29,9 +29,59 @@ import { get, set } from "react-hook-form";
 
 
 const Cart =  () => {   
-    
-  const products = products_variant;
+  
+  /* Get Products */
+  const [products, setProducts] = useState('');
 
+  const [isLoading, setIsLoading] = useState(true);
+
+  //Calculo de variables finales
+  const [subtotal, setSubtotal] = useState(0);
+  const [total, setTotal] = useState(0);
+  const [shippingCost, setShippingCost] = useState(0);
+  const [totalConEnvio, setTotalConEnvio] = useState(0);
+
+  const getProducts = () =>{
+    try {
+      const urlServer = "http://localhost:3002";
+      const endpoint = "/products";
+      const productsData = axios.get(urlServer + endpoint).then((response) => {
+        setProducts(response.data);
+        const newSubtotal = cart.reduce((subtotal, item) => {
+          const product = response.data.find((p) => p.id_products == item.id);
+          return subtotal + (product.price * item.cantidad);
+        }, 0);
+        
+        setSubtotal(newSubtotal);
+      
+        // Calcular el total con IVA del 19%
+        const iva = 0.19;
+        const newTotal = newSubtotal * (1 + iva);
+        setTotal(newTotal);
+      
+        // Calcular el costo de envío
+        const newShippingCost = newTotal > 100000 ? 0 : 10000;
+        setShippingCost(newShippingCost);
+      
+        // Calcular el total (subtotal + costo de envío)
+        const newTotalConEnvio = newTotal + newShippingCost;
+        setTotalConEnvio(newTotalConEnvio); 
+        
+        //updata
+        setIsLoading(false)
+            }
+      );
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  console.log("subtotal", subtotal)
+  console.log("total", total)
+  console.log("shippingCost", shippingCost)
+  console.log("totalConEnvio", totalConEnvio)
+
+  
   const navigate = useNavigate();
 
   const { cart, setCart } = useContext(Context);  
@@ -41,43 +91,27 @@ const Cart =  () => {
   const [usuario, setUsuarioLocal] = useState({});  
   const { token } = useContext(ContextUser);
 
-      /* Obtener datos del usuario */
-      const getUsuarioData = async () => {
-        const urlServer = "http://localhost:3002";
-        const endpoint = "/users";
-         try {
-          const { data } = await axios.get(urlServer + endpoint, {
-            headers: { Authorization: "Bearer " + token.token },
-          });
-          setUsuarioGlobal(data);
-          setUsuarioLocal(data);
-        } catch(error) {
-            
-          
-          console.log(error + " 🙁");
-        //catch ({ response: { data: message } }) {
-          //alert(message + " 🙁");
-          //console.log(message);
-        }
-      };
-
-  /*Añade productos al cart*/
-  const addToCart = (id) => {    
-      const productoExistente = cart.find((p) => p.id === id);
-      if (productoExistente) {          
-          const nuevosProductos = cart.map((p) =>
-          p.id === id ? { ...p, cantidad: p.cantidad + 1 } : p
-      );
-          setCart(nuevosProductos);
-      } else {
-      // Si el producto no existe en el carrito, agregarlo como un nuevo elemento
-          const producto = products.find((p) => p.id_product_variant == id);
-          console.log(producto)
-      if (producto) {
-          setCart([...cart, { id, cantidad: 1 }]);
-      }
+  /* Obtener datos del usuario */
+  const getUsuarioData = async () => {
+    const urlServer = "http://localhost:3002";
+    const endpoint = "/users";
+      try {
+      const { data } = await axios.get(urlServer + endpoint, {
+        headers: { Authorization: "Bearer " + token.token },
+      });
+      setUsuarioGlobal(data);
+      setUsuarioLocal(data);
+    } catch(error) {
+        
+      
+      console.log(error + " 🙁");
+    //catch ({ response: { data: message } }) {
+      //alert(message + " 🙁");
+      //console.log(message);
     }
   };
+
+
 
   // Actualiza la cantidad en el carrito
   const updateCartQuantity = (id, newQuantity) => {
@@ -113,40 +147,26 @@ const Cart =  () => {
             
   }); 
 
-  console.log("formdata", formData)
-  console.log("usuasrio dsadasdsa ", usuario)
 
-  //Calculo de variables finales
-  const [subtotal, setSubtotal] = useState(0);
-  const [total, setTotal] = useState(0);
-  const [shippingCost, setShippingCost] = useState(0);
-  const [totalConEnvio, setTotalConEnvio] = useState(0);
-      
+
+
+
+  
+
+
+
+  console.log(products)
   useEffect(() => {
+    getProducts();
     getUsuarioData();
-    // Calcular el subtotal
-    const newSubtotal = cart.reduce((subtotal, item) => {
-      const product = products.find((p) => p.id_product_variant == item.id);
-      return subtotal + (product.price * item.cantidad);
-    }, 0);
     
-    setSubtotal(newSubtotal);
+    // Calcular el subtotal   
+ 
   
-    // Calcular el total con IVA del 19%
-    const iva = 0.19;
-    const newTotal = newSubtotal * (1 + iva);
-    setTotal(newTotal);
-  
-    // Calcular el costo de envío
-    const newShippingCost = newTotal > 100000 ? 0 : 10000;
-    setShippingCost(newShippingCost);
-  
-    // Calcular el total (subtotal + costo de envío)
-    const newTotalConEnvio = newTotal + newShippingCost;
-    setTotalConEnvio(newTotalConEnvio);
-  }, [cart, products]);
+ 
+  }, [cart, ]);
 
-  // HandleChange
+ // HandleChange
   const handleChange = (e) => {
     const { id, value } = e.target;
     // Zona horaria de Santiago
@@ -272,34 +292,41 @@ const Cart =  () => {
                     <th className="product-total">Total</th>
                     </tr>
                 </thead>
-                <tbody>
-                {cart.map((item) => {
-                    const product = products.find((product) => product.id_product_variant === parseInt(item.id));
-                    return (
-                        <tr className="table-body-row">
-                        <td className="product-remove">
-                        <a href="#" onClick={() => removeFromCart(item.id)}>
-                            <i className="far fa-window-close" />
-                        </a>
-                        </td>
-                        <td className="product-image">
-                            <img src="https://www.webconsultas.com/sites/default/files/styles/wc_adaptive_image__medium/public/media/2019/04/23/menta_p.jpg" alt="" />
-                        </td>
-                        <td className="product-name">{product.name+" "+product.variante}</td>
-                        <td className="product-price">{product.price}</td>
-                        <td className="product-quantity">
-                        <input
-                            type="number"
-                            placeholder={item.cantidad}
-                            value={item.cantidad}
-                            onChange={(e) => updateCartQuantity(item.id, parseInt(e.target.value))}
-                        />
-                        </td>
-                        <td className="product-total">{(product.price)*(item.cantidad)}</td>
-                        </tr>
-                    );
-                })}
-                </tbody>
+                
+                
+                {isLoading ? (
+                  <p>Cargando productos...</p>
+                ) : (
+                  <tbody>
+                      {cart.map((item) => {
+                        const product = products.find((product) => product.id_products === parseInt(item.id));
+                        return (
+                          <tr className="table-body-row">
+                            <td className="product-remove">
+                              <a href="#" onClick={() => removeFromCart(item.id)}>
+                                <i className="far fa-window-close" />
+                              </a>
+                            </td>
+                            <td className="product-image">
+                              <img src="https://www.webconsultas.com/sites/default/files/styles/wc_adaptive_image__medium/public/media/2019/04/23/menta_p.jpg" alt="" />
+                            </td>
+                            <td className="product-name">{product.name + " " + product.variant}</td>
+                            <td className="product-price">{product.price}</td>
+                            <td className="product-quantity">
+                              <input
+                                type="number"
+                                placeholder={item.cantidad}
+                                value={item.cantidad}
+                                onChange={(e) => updateCartQuantity(item.id, parseInt(e.target.value))}
+                              />
+                            </td>
+                            <td className="product-total">{product.price * item.cantidad}</td>
+                          </tr>
+                        );
+                      })}
+                  </tbody>
+                )}
+              
                 </table>
             </div>
             </div>
@@ -317,7 +344,7 @@ const Cart =  () => {
                     <td>
                         <strong>Subtotal: </strong>
                     </td>
-                    <td>{`$${Math.round(subtotal/1.19)}`}</td>
+                    <td>{`$${Math.round(subtotal-subtotal*0.19)}`}</td>
                     </tr>
                     <tr className="total-data">
                     <td>

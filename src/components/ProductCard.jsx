@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import { Card, Button } from 'react-bootstrap';
 
 import '../assets/css/all.min.css';
@@ -20,6 +20,10 @@ import { useContext } from 'react';
 /*Data */
 import { products_variant } from '../data/Products_variants';
 
+/*Axios */
+import axios from 'axios';
+
+
 const ProductCard = (props) => {
 
   const product = props.product;
@@ -28,7 +32,27 @@ const ProductCard = (props) => {
   const img = props.img;
   const id = props.id;
 
-  const products = products_variant;
+  //const products = products_variant;
+
+  const [products, setProducts] = useState('');
+
+  const getProducts = () =>{
+    try {
+      const urlServer = "http://localhost:3002";
+      const endpoint = "/products";
+      axios.get(urlServer + endpoint).then((response) => {
+        setProducts(response.data);
+      }
+      );
+    } catch (error) {
+      console.log(error);      
+    }
+  }
+
+  useEffect(() => {
+    getProducts();
+  }, []);
+
 
   const { cart, setCart } = useContext(Context);  
 
@@ -42,7 +66,7 @@ const ProductCard = (props) => {
         setCart(nuevosProductos);
     } else {
       // Si el producto no existe en el carrito, agregarlo como un nuevo elemento
-        const producto = products.find((p) => p.id_product_variant == id);
+        const producto = products.find((p) => p.id_products == id);
         console.log(producto)
     if (producto) {
         setCart([...cart, { id, cantidad: 1 }]);
