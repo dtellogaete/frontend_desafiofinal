@@ -24,6 +24,28 @@ const Marketplace = () => {
 
     const [products, setProducts] = useState('');
 
+    //Ordenar los productos
+    const [orderType, setOrderType] = useState(''); // 'alphabetical' o 'price'
+    const [ascendingOrder, setAscendingOrder] = useState(true);
+
+    const handleSortByAlphabet = () => {
+        setCurrentPage(1); // Reiniciar a la primera página
+        setOrderType('alphabetical');
+        setAscendingOrder(!ascendingOrder);
+    };
+    
+    const handleSortByPrice = () => {
+        setCurrentPage(1); // Reiniciar a la primera página
+        setOrderType('price');
+        setAscendingOrder(!ascendingOrder);
+    };
+
+
+
+// ... Renderizar los productos ordenados
+
+    
+
     // Paginación
     const [currentPage, setCurrentPage] = useState(1);
     const productsPerPage = 9;
@@ -75,6 +97,22 @@ const Marketplace = () => {
     console.log(indexOfFirstProduct)
     console.log(indexOfLastProduct)
 
+    //Ordernar productos
+
+    const sortedProducts = [...currentProducts]; // Crear una copia para evitar mutaciones
+
+    if (orderType === 'alphabetical') {
+        sortedProducts.sort((a, b) =>
+            ascendingOrder
+                ? a.name.localeCompare(b.name)
+                : b.name.localeCompare(a.name)
+        );
+    } else if (orderType === 'price') {
+        sortedProducts.sort((a, b) =>
+            ascendingOrder ? a.price - b.price : b.price - a.price
+        );
+    }
+
     
     return (
         <>
@@ -118,18 +156,26 @@ const Marketplace = () => {
                     <div className="row">
                         <div className="col-md-12">
                         <div className="product-filters">
-                            <ul>
-                            <li className="active" data-filter="*">All</li>
-                            <li data-filter=".strawberry">Strawberry</li>
-                            <li data-filter=".berry">Berry</li>
-                            <li data-filter=".lemon">Lemon</li>
-                            </ul>
-                        </div>
+                        <ul>
+                                                      
+                            <li>
+                                <Button className='btn-success' onClick={handleSortByAlphabet}>
+                                    Ordenar por Nombre {ascendingOrder ? '↑' : '↓'}
+                                </Button>
+                            </li>
+                            <li>
+                                <Button className='btn-success' onClick={handleSortByPrice}>
+                                    Ordenar por Precio {ascendingOrder ? '↑' : '↓'}
+                                </Button>
+                            </li>
+                        </ul>
+                    </div>
+
                         </div>
                     </div>
                     <div className="row product-lists">
-                    {Array.isArray(currentProducts) && currentProducts.length > 0 ? (
-                        currentProducts.map((product) => (
+                    {Array.isArray(sortedProducts) && currentProducts.length > 0 ? (
+                        sortedProducts.map((product) => (
                             <ProductCard key={product.id_products} product={product.name} variant={product.variant} price={product.price} img={product.photo} id={product.id_products} />
                         ))
                     ) : (
