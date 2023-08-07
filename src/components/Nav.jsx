@@ -30,7 +30,8 @@ const Navbar = () => {
       const { data } = await axios.get(urlServer + endpoint, {
         headers: { Authorization: "Bearer " + token.token },
       });
-      
+      localStorage.setItem("username", data.name);
+      setUsuario(data);
     } catch(error) {
       
       console.log(error + " 🙁");
@@ -50,17 +51,10 @@ const Navbar = () => {
 
   const cerrarSesion = () => {
     // Elimina el token del Local Storage
-    localStorage.removeItem("token");
-
-    
-    setUsuario(null); // O setUsuario({})
-    
+    localStorage.removeItem("username");    
+    setUsuario(null);     
     navigate('/');
-  };
-
-
-
- 
+  }; 
 
   const handleMenuToggle = () => {
     setMenuOpen(!isMenuOpen);
@@ -90,7 +84,7 @@ const Navbar = () => {
                 {/* menu start */}
                 <nav className={`main-menu ${isMenuOpen ? 'open' : ''}`}>
                   <ul>
-                  {usuario && (
+                  {localStorage.username && (
                     <>
                       {/* Aquí pon los elementos que deseas mostrar cuando usuario tiene propiedades */}
                       <li><Link to="/perfil">Perfil</Link></li>
@@ -98,7 +92,7 @@ const Navbar = () => {
                     </>
                     )}
                     {/* Otras partes del componente */}
-                    {!usuario && (
+                    {!localStorage.username && (
                       <>
                         {/* Aquí pon los elementos que deseas mostrar cuando usuario está vacío */}
                         <li><Link to="/login">Log In</Link></li>

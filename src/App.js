@@ -15,6 +15,8 @@ import Cart from './views/Cart';
 import Contact from './views/Contact';
 import Profile from './views/Profile';
 import RegistroProductos from './views/RegistroProductos';
+import EditarPerfil from './views/EditarPerfil';
+import EditarProducto from './views/EditarProducto';
 
 /*Context*/
 import Context  from './contextproduct';
@@ -49,6 +51,8 @@ const App = () => {
           <Route path="/contact" element={<Contact/>} /> 
           <Route path="/perfil" element={<Profile/>} /> 
           <Route path="/registrar-producto" element={<RegistroProductos/>} />    
+          <Route path="/editar-perfil" element={<EditarPerfil/>} />   
+          <Route path="/editar-producto/:id" element={<EditarProducto/>} />
         </Routes>
         </Context.Provider>
         </ContextUser.Provider>

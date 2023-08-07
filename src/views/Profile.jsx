@@ -45,8 +45,6 @@ const Profile = () => {
     const [usuario, setUsuarioLocal] = useState({});  
     const { token } = useContext(ContextUser);
 
-    console.log("tokeeeeeeeeeeeeeeeeeeeeen",token)
-
     /* Obtener datos del usuario */
     const getUsuarioData = async () => {
         const urlServer = "http://localhost:3002";
@@ -118,9 +116,10 @@ const Profile = () => {
 
     fetchData();
 
+   
 
 
-    if (usuario === null) {
+    if (localStorage.username ==! "") {
         navigate("/");
     }
     }, []);
@@ -165,6 +164,15 @@ const Profile = () => {
     
         return `${day}-${month}-${year}`;
     }
+
+    const handleClick = () => {
+        navigate("/editar-perfil")
+    };
+
+    const handleClickProducto = (id) => {
+        navigate("/editar-producto/"+ id)
+    };
+
     
 
     
@@ -223,7 +231,7 @@ const Profile = () => {
                                 </div>
                             )}
                          
-                            <p><Button className="btn-success">Editar</Button></p>
+                            <p><Button className="btn-success" onClick={handleClick} >Editar</Button></p>
                             {usuario.role === "Tienda" && (
                                 <p><Button className="btn-success">
                                 <Link to="/registrar-producto" style={{color:"#fff", textDecoration: "none", outline: "none"}}>Agregar Productos</Link>
@@ -264,7 +272,7 @@ const Profile = () => {
                                     <td>{product.stock}</td>
                                     <td>{formatPrice(product.price)}</td>
                                     <td>
-                                    <Button variant="success">Editar</Button>
+                                    <Button variant="success" onClick={()=> handleClickProducto(product.id_products)}>Editar</Button>
                                     </td>
                                     <td>
                                     <Button variant="danger" onClick={()=> deleteProduct(product.id_products)}>Borrar</Button>

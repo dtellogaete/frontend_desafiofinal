@@ -37,6 +37,7 @@ const Login = () => {
         const { data: token } = await axios.post(urlServer + endpoint, usuario);   
         console.log(token)     
         localStorage.setItem("token", token.token);
+        localStorage.setItem("usuario", usuario);
         setToken(token);    
         setUsuario()
         alert("Usuario logueado con éxito");
