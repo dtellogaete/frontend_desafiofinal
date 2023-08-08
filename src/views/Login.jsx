@@ -28,7 +28,7 @@ const Login = () => {
       };
 
     const iniciarSesion = async () => {
-      const urlServer = "http://localhost:3002";
+      const urlServer = "https://backend-4vyy.onrender.com";
       const endpoint = "/login";
       const { email, password } = usuario;
       try {

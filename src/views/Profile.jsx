@@ -47,7 +47,7 @@ const Profile = () => {
 
     /* Obtener datos del usuario */
     const getUsuarioData = async () => {
-        const urlServer = "http://localhost:3002";
+        const urlServer = "https://backend-4vyy.onrender.com";
         const endpoint = "/users";
          try {
           const { data } = await axios.get(urlServer + endpoint, {
@@ -71,7 +71,7 @@ const Profile = () => {
     const [products, setProducts] = useState([]);
     const getProducts = async (id_user) => {
         try {
-            const urlServer = "http://localhost:3002";
+            const urlServer = "https://backend-4vyy.onrender.com";
             const endpoint = `/products/users/${id_user}`;
             
             const response = await axios.get(urlServer + endpoint);
@@ -89,7 +89,7 @@ const Profile = () => {
 
     const getTicketId = async (id_user) => {
         try {
-            const urlServer = "http://localhost:3002";
+            const urlServer = "https://backend-4vyy.onrender.com";
             const endpoint = `/tickets/users/${id_user}`;
     
             const response = await axios.get(urlServer + endpoint);
@@ -136,7 +136,7 @@ const Profile = () => {
         }
 
         try {
-            const urlServer = "http://localhost:3002";
+            const urlServer = "https://backend-4vyy.onrender.com";
             const endpoint = `/products/${id_product_variant}`;
             const response = await axios.delete(urlServer + endpoint);
             const data = response.data;

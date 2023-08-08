@@ -23,7 +23,7 @@ const EditarProductos = () => {
 
   const getProducts = (id_products) =>{
     try {
-      const urlServer = "http://localhost:3002";
+      const urlServer = "https://backend-4vyy.onrender.com";
       const endpoint = "/products/" + id_products;
       const productsData = axios.get(urlServer + endpoint).then((response) => {
         setProducto(response.data)

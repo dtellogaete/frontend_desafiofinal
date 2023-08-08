@@ -43,7 +43,7 @@ const EditarPerfil = () => {
     console.log(usuario)
 
     const editarUsuario = async () => {
-        const urlServer = "http://localhost:3002";
+        const urlServer = "https://backend-4vyy.onrender.com";
         const endpoint = "/users";
         try {
           await axios.put(urlServer + endpoint, usuario);

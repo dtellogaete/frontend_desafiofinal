@@ -38,7 +38,7 @@ const ProductCard = (props) => {
 
   const getProducts = () =>{
     try {
-      const urlServer = "http://localhost:3002";
+      const urlServer = "https://backend-4vyy.onrender.com";
       const endpoint = "/products";
       axios.get(urlServer + endpoint).then((response) => {
         setProducts(response.data);

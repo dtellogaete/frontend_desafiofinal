@@ -43,7 +43,7 @@ const Cart =  () => {
 
   const getProducts = () =>{
     try {
-      const urlServer = "http://localhost:3002";
+      const urlServer = "https://backend-4vyy.onrender.com";
       const endpoint = "/products";
       const productsData = axios.get(urlServer + endpoint).then((response) => {
         setProducts(response.data);
@@ -93,7 +93,7 @@ const Cart =  () => {
 
   /* Obtener datos del usuario */
   const getUsuarioData = async () => {
-    const urlServer = "http://localhost:3002";
+    const urlServer = "https://backend-4vyy.onrender.com";
     const endpoint = "/users";
       try {
       const { data } = await axios.get(urlServer + endpoint, {
@@ -188,7 +188,7 @@ const Cart =  () => {
   // post ticket detail
   const addTicketDetail = async (dataProduct) => {
     try {
-      const urlServer = "http://localhost:3002";
+      const urlServer = "https://backend-4vyy.onrender.com";
       const endpoint = '/ticketdetail';
       const response = await axios.post(urlServer + endpoint, dataProduct);
       console.log('Respuesta del servidor:', response.data);
@@ -204,7 +204,7 @@ const Cart =  () => {
 
   const addTicket = async () => {
     try {
-      const urlServer = "http://localhost:3002";
+      const urlServer = "https://backend-4vyy.onrender.com";
       const endpoint = '/tickets';
       const response = await axios.post(urlServer + endpoint, formData);
       console.log('Respuesta del servidor:', response.data);

@@ -28,7 +28,7 @@ const ProductSingle = () => {
 
     /* Obtener productos */
     const getProduct = (id_product) => {
-        fetch('http://localhost:3002/products/' + id_product)
+        fetch('"https://backend-4vyy.onrender.com/products/' + id_product)
         .then(response => response.json())
         .then(data => {
             console.log(data);

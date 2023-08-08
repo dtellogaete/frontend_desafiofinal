@@ -27,7 +27,7 @@ const RegistroProductos = () => {
   const { token } = useContext(ContextUser);
 
   const getUsuarioData = async () => {
-    const urlServer = "http://localhost:3002";
+    const urlServer = "https://backend-4vyy.onrender.com";
     const endpoint = "/users";
      try {
       const { data } = await axios.get(urlServer + endpoint, {
@@ -83,7 +83,7 @@ const RegistroProductos = () => {
 
   const registrarProducto = async () => {
     try {
-      const urlServer = "http://localhost:3002";
+      const urlServer = "https://backend-4vyy.onrender.com";
       const endpoint = '/products';
       const response = await axios.post(urlServer + endpoint, producto); // Hacer la solicitud POST a la ruta '/products'
       console.log('Respuesta del servidor:', response.data);

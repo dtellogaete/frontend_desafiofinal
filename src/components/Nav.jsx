@@ -24,7 +24,7 @@ const Navbar = () => {
   console.log("usuario",usuario)
 
   const getUsuarioData = async () => {
-    const urlServer = "http://localhost:3002";
+    const urlServer = "https://backend-4vyy.onrender.com";
     const endpoint = "/users";
      try {
       const { data } = await axios.get(urlServer + endpoint, {

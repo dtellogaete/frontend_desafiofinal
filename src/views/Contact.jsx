@@ -39,7 +39,7 @@ const Contact = () => {
 
     const addContact = async () => {
         try {
-            const urlServer = "http://localhost:3002";
+            const urlServer = "https://backend-4vyy.onrender.com";
             const endpoint = '/contact';
             const response = await axios.post(urlServer + endpoint, contact); 
             console.log('Respuesta del servidor:', response.data);

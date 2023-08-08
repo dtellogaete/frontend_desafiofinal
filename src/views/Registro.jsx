@@ -58,7 +58,7 @@ const Registro = () => {
     console.log(usuario)
 
     const registrarUsuario = async () => {
-        const urlServer = "http://localhost:3002";
+        const urlServer = "https://backend-4vyy.onrender.com";
         const endpoint = "/users";
         try {
           await axios.post(urlServer + endpoint, usuario);
