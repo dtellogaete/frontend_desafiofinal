@@ -36,7 +36,7 @@ const App = () => {
 
   return ( 
     <div>
-      <BrowserRouter>
+      <BrowserRouter basename="/">
       
         <ContextUser.Provider value={{ usuario, setUsuario, token, setToken }}>
           <Context.Provider value={{ cart, setCart}}>

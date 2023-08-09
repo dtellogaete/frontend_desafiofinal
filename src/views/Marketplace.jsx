@@ -53,7 +53,7 @@ const Marketplace = () => {
     /* Obtener productos */
     const getProducts = () => {
         try {
-          fetch('"https://backend-4vyy.onrender.com/products/')
+          fetch('https://backend-4vyy.onrender.com/products/')
             .then(response => {
               if (!response.ok) {
                 throw new Error('Network response was not ok'); 
