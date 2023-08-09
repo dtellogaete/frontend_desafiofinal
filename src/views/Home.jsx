@@ -295,29 +295,37 @@ const Home = () => {
             {/* end latest news */}
             {/* logo carousel */}
             <div >
-            <div className="container">
-                <div className="row">
-                <div className="col-lg-12">
-                    
-                    <div className="single-logo-item">                        
-                        <img src="/assets/img/company-logos/1.png" alt="" />
+            <div className="container" style={{paddingBottom: '10px'}}>
+                <div className="row justify-content-center">
+                    <div className="col-lg-2 mb-4">
+                        <div className="single-logo-item text-center">
+                            <img src="/assets/img/company-logos/1.png" alt="" />
+                        </div>
                     </div>
-                    <div className="single-logo-item">
-                        <img src="/img/company-logos/2.png" alt="" />
+                    <div className="col-lg-2 mb-4">
+                        <div className="single-logo-item text-center">
+                            <img src="/img/company-logos/2.png" alt="" />
+                        </div>
                     </div>
-                    <div className="single-logo-item">
-                        <img src="/img/company-logos/3.png" alt="" />
+                    <div className="col-lg-2 mb-4">
+                        <div className="single-logo-item text-center">
+                            <img src="/img/company-logos/3.png" alt="" />
+                        </div>
                     </div>
-                    <div className="single-logo-item">
-                        <img src="/img/company-logos/4.png" alt="" />
+                    <div className="col-lg-2 mb-4">
+                        <div className="single-logo-item text-center">
+                            <img src="/img/company-logos/4.png" alt="" />
+                        </div>
                     </div>
-                    <div className="single-logo-item">
-                        <img src="/img/company-logos/5.png" alt="" />
-                        <img src="/img/logo.png" alt="" />
-                    </div>                   
-                </div>
+                    <div className="col-lg-2 mb-4">
+                        <div className="single-logo-item text-center">
+                            <img src="/img/company-logos/5.png" alt="" />
+                        </div>
+                    </div>
+                   
                 </div>
             </div>
+
             </div>
             {/* end logo carousel */}
                 </div>
