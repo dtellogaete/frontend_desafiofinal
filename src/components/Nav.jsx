@@ -84,10 +84,11 @@ const Navbar = () => {
                 {/* menu start */}
                 <nav className={`main-menu ${isMenuOpen ? 'open' : ''}`}>
                   <ul>
+                  <li><Link to="/">Home</Link></li>
                   {localStorage.username && (
                     <>
                       {/* Aquí pon los elementos que deseas mostrar cuando usuario tiene propiedades */}
-                      <li><Link to="/">Home</Link></li>
+                      
                       <li><Link to="/perfil">Perfil</Link></li>
                       <li><Link onClick={cerrarSesion} to="/">Cerrar sesión</Link></li>
                     </>
