@@ -146,15 +146,7 @@ const Cart =  () => {
       address_shipping: '',
             
   }); 
-
-
-
-
-
   
-
-
-
   console.log(products)
   useEffect(() => {
     getProducts();
@@ -192,7 +184,7 @@ const Cart =  () => {
       const endpoint = '/ticketdetail';
       const response = await axios.post(urlServer + endpoint, dataProduct);
       console.log('Respuesta del servidor:', response.data);
-      alert('Ticket enviado con éxito');
+      
       // Realiza las acciones necesarias después de registrar el producto
       } catch (error) {
       console.log('Error al registrar el producto:', error);
@@ -232,6 +224,8 @@ const Cart =  () => {
         
       });
       alert('Compra exitosa!')
+      setCart([]);
+      navigate('/');
     } catch (error) {
       console.log('Error al registrar el producto:', error);
       alert('Error al registrar el producto:', error)
@@ -291,9 +285,7 @@ const Cart =  () => {
                     <th className="product-quantity">Cantidad</th>
                     <th className="product-total">Total</th>
                     </tr>
-                </thead>
-                
-                
+                </thead>               
                 {isLoading ? (
                   <p>Cargando productos...</p>
                 ) : (
@@ -303,9 +295,9 @@ const Cart =  () => {
                         return (
                           <tr className="table-body-row">
                             <td className="product-remove">
-                              <a href="#" onClick={() => removeFromCart(item.id)}>
+                              <div onClick={() => removeFromCart(item.id)}>
                                 <i className="far fa-window-close" />
-                              </a>
+                              </div>
                             </td>
                             <td className="product-image">
                               <img src="https://www.webconsultas.com/sites/default/files/styles/wc_adaptive_image__medium/public/media/2019/04/23/menta_p.jpg" alt="" />

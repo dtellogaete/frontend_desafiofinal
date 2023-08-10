@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
 
 import '../assets/css/all.min.css';
@@ -26,9 +26,39 @@ import { useContext } from 'react';
 
 const Home = () => {
 
-    const products = products_variant;
+    const { cart, setCart } = useContext(Context);     
+    
+    const [products, setProducts] = useState({});
+    const [isLoadingProducts, setIsLoadingProducts] = useState(true);
 
-    const { cart, setCart } = useContext(Context);          
+    /* Obtener productos y seleccionar los primeros 3 */
+    const getProduct = () => {
+        setIsLoadingProducts(true);
+
+        fetch('https://backend-4vyy.onrender.com/productsstock/')
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(data => {
+            const selectedProducts = data.slice(0, 3);
+
+            setProducts(selectedProducts);
+            setIsLoadingProducts(false);
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            setIsLoadingProducts(false);
+        });
+    }
+
+    useEffect(() => {
+        getProduct();
+    }, []);
+
+    console.log(products)
 
     
 
@@ -124,20 +154,27 @@ const Home = () => {
                     </div>
                 </div>
                 </div>
-                <div className="row">
+             
                 {/*Components Product Card */}      
-                {products.slice(0, 3).map((product) => (
-                    <ProductCard
-                        key={product.id_product_variant} // Asegúrate de agregar una clave única para cada elemento en el mapa
-                        product={product.name}
-                        variant={product.variante}
-                        price={product.price}
-                        img={"https://pymstatic.com/27652/conversions/manzanilla-wide.jpg"}
-                        id={product.id_product_variant.toString()}
-                    />
-                ))}
+                {isLoadingProducts ? (
+                        <p>Cargando productos...</p>
+                    ) : (
+                        <div className="row">
+                            {products.map((product) => (
+                                    <ProductCard
+                                        key={product.id_products} // Asegúrate de agregar una clave única para cada elemento en el mapa
+                                        product={product.name}
+                                        variant={product.variant}
+                                        price={product.price}
+                                        img={product.photo}
+                                        id={product.id_products.toString()}
+                                    />
+                                ))}   
+                        </div>
+                    )}             
 
-                </div>
+
+                
             </div>
             </div>
             {/* end product section */}

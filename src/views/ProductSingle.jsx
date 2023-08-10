@@ -25,25 +25,59 @@ const ProductSingle = () => {
     const { id } = useParams();
 
     const [product, setProduct] = useState('');
+    const [isLoadingProduct, setIsLoadingProduct] = useState(true);
 
-    /* Obtener productos */
-    const getProduct = (id_product) => {
-        fetch('"https://backend-4vyy.onrender.com/products/' + id_product)
+    /* Obtener un producto por su ID */
+    const getProductId = (id_product) => {
+        setIsLoadingProduct(true);
+
+        fetch('https://backend-4vyy.onrender.com/products/' + id_product)
         .then(response => response.json())
         .then(data => {
             console.log(data);
             setProduct(data);
+            setIsLoadingProduct(false);
         })
-        .catch(error => console.error('Error:', error));
+        .catch(error => {
+            console.error('Error:', error);
+            setIsLoadingProduct(false);
+        });
+    }
+
+    const [products, setProducts] = useState([]);
+    const [isLoadingProducts, setIsLoadingProducts] = useState(true);
+
+    /* Obtener productos y seleccionar los primeros 3 */
+    const getProduct = () => {
+        setIsLoadingProducts(true);
+
+        fetch('https://backend-4vyy.onrender.com/productsstock/')
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(data => {
+            const selectedProducts = data.slice(0, 3);
+
+            setProducts(selectedProducts);
+            setIsLoadingProducts(false);
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            setIsLoadingProducts(false);
+        });
     }
 
     useEffect(() => {
-        getProduct(id);
+        getProductId(id);
+        getProduct();
     }, []);
 
-    console.log(product);    
+    console.log(products);    
 
-    const products = products_variant;
+    
 
     /*Añade productos al cart*/
     const { cart, setCart } = useContext(Context);  
@@ -81,6 +115,7 @@ const ProductSingle = () => {
         <>
             <Navbar />
             <div>
+            
                 {/* breadcrumb-section */}
                 <div className="breadcrumb-section breadcrumb-bg">
                     <div className="container">
@@ -138,22 +173,23 @@ const ProductSingle = () => {
                             <p>Descubre el poder de la naturaleza con nuestros productos de hierbas naturales para consumo. En nuestra tienda, encontrarás una amplia variedad de hierbas cuidadosamente seleccionadas para brindarte beneficios para tu bienestar físico y mental.</p>
                         </div>
                         </div>
-                    </div>
-                    <div className="row">
-                        
-                        {/*Components Product Card */}      
-                        {products.slice(0, 3).map((product) => (
-                            <ProductCard
-                                key={product.id_product_variant} // Asegúrate de agregar una clave única para cada elemento en el mapa
-                                product={product.name}
-                                variant={product.variante}
-                                price={product.price}
-                                img={"https://pymstatic.com/27652/conversions/manzanilla-wide.jpg"}
-                                id={product.id_product_variant.toString()}
-                            />
-                        ))}
-                        
-                    </div>
+                    </div>                    
+                    {isLoadingProducts ? (
+                        <p>Cargando productos...</p>
+                    ) : (
+                        <div className="row">
+                            {products.map((product) => (
+                                    <ProductCard
+                                        key={product.id_products} // Asegúrate de agregar una clave única para cada elemento en el mapa
+                                        product={product.name}
+                                        variant={product.variant}
+                                        price={product.price}
+                                        img={product.photo}
+                                        id={product.id_products.toString()}
+                                    />
+                                ))}   
+                        </div>
+                    )}                    
                     </div>
                 </div>
                 {/* end more products */}
@@ -184,8 +220,10 @@ const ProductSingle = () => {
                     </div>
                 </div>
                 {/* end logo carousel */}
+            
             </div>
             <Footer />
+     
         </>
     );
 }
